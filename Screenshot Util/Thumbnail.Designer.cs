@@ -56,10 +56,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.LightGreen;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.picThumbnail);
             this.Name = "Thumbnail";
-            this.Size = new System.Drawing.Size(119, 140);
+            this.Size = new System.Drawing.Size(117, 138);
             this.Load += new System.EventHandler(this.Thumbnail_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picThumbnail)).EndInit();
             this.ResumeLayout(false);

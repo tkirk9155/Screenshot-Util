@@ -34,6 +34,7 @@ namespace Screenshot_Util
             Image img = Bitmap.FromFile(FileName);
             img.GetThumbnailImage(Width, Height, imgCallback, IntPtr.Zero);
             picThumbnail.Image = img;
+            lblDescription.BackColor = Color.Transparent;
         }
     }
 }

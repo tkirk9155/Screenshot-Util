@@ -38,6 +38,7 @@
             this.tabBrowse = new System.Windows.Forms.TabPage();
             this.grdBrowseFiles = new System.Windows.Forms.DataGridView();
             this.tabOpen = new System.Windows.Forms.TabPage();
+            this.picDisplay = new System.Windows.Forms.PictureBox();
             this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtDescription = new System.Windows.Forms.RichTextBox();
@@ -47,7 +48,6 @@
             this.btnReset = new System.Windows.Forms.Button();
             this.lblName = new System.Windows.Forms.Label();
             this.lblDescription = new System.Windows.Forms.Label();
-            this.picDisplay = new System.Windows.Forms.PictureBox();
             this.barMenu.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabBrowse.SuspendLayout();
@@ -151,13 +151,22 @@
             this.tabOpen.Text = "tabPage2";
             this.tabOpen.UseVisualStyleBackColor = true;
             // 
+            // picDisplay
+            // 
+            this.picDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picDisplay.Location = new System.Drawing.Point(3, 141);
+            this.picDisplay.Name = "picDisplay";
+            this.picDisplay.Size = new System.Drawing.Size(800, 346);
+            this.picDisplay.TabIndex = 1;
+            this.picDisplay.TabStop = false;
+            // 
             // flowPanel
             // 
             this.flowPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.flowPanel.Location = new System.Drawing.Point(3, 3);
             this.flowPanel.Margin = new System.Windows.Forms.Padding(0);
             this.flowPanel.Name = "flowPanel";
-            this.flowPanel.Size = new System.Drawing.Size(800, 100);
+            this.flowPanel.Size = new System.Drawing.Size(800, 138);
             this.flowPanel.TabIndex = 0;
             this.flowPanel.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.flowPanel_ControlAdded);
             // 
@@ -207,6 +216,7 @@
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnReset
             // 
@@ -237,15 +247,6 @@
             this.lblDescription.Size = new System.Drawing.Size(69, 15);
             this.lblDescription.TabIndex = 4;
             this.lblDescription.Text = "Description";
-            // 
-            // picDisplay
-            // 
-            this.picDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.picDisplay.Location = new System.Drawing.Point(3, 103);
-            this.picDisplay.Name = "picDisplay";
-            this.picDisplay.Size = new System.Drawing.Size(800, 384);
-            this.picDisplay.TabIndex = 1;
-            this.picDisplay.TabStop = false;
             // 
             // frmMain
             // 

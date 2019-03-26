@@ -14,6 +14,7 @@ namespace Screenshot_Util
     {
         public static DataTable GridDatasource;
         public static ImageCollection CurrentCollection;
+        public static Thumbnail ActiveThumbnail;
 
         public static DataTable GetFilesList()
         {
@@ -79,8 +80,9 @@ namespace Screenshot_Util
 
 
 
-        public static void NewCollection()
+        public static bool NewCollection()
         {
+            bool result = false;
             using (frmNewCollection frm = new frmNewCollection())
             {
                 frm.ShowDialog();
@@ -96,8 +98,11 @@ namespace Screenshot_Util
                     GridDatasource.Rows[GridDatasource.Rows.Count - 1]["Info"] = frm.txtDescription.Text;
                     GridDatasource.Rows[GridDatasource.Rows.Count - 1]["DateCreated"] = DateTime.Now;
                     GridDatasource.Rows[GridDatasource.Rows.Count - 1]["DateModified"] = DateTime.Now;
+
+                    result = true;
                 }
             }
+            return result;
         }
 
 
@@ -115,6 +120,34 @@ namespace Screenshot_Util
             return result;
         }
 
+
+        public static bool SaveImageInfo()
+        {
+            string writeToFile = "";
+
+            foreach (Thumbnail thumb in CurrentCollection.Images)
+            {
+                string contents = "{0}|{1}|{2}" + Environment.NewLine;
+                writeToFile += string.Format(contents, thumb.FileName, thumb.ImageName, thumb.Info);
+            }
+
+            File.WriteAllText(CurrentCollection.Path + @"\info.txt",
+                              writeToFile);
+
+            return false;
+        }
+
+
+
+        public static string[] GetFileDates(string fileName)
+        {
+            string[] dates = new string[2];
+            FileInfo fInfo = new FileInfo(fileName);
+            dates[0] = fInfo.CreationTime.ToString();
+            dates[1] = fInfo.LastWriteTime.ToString();
+
+            return dates;
+        }
 
     }
 }

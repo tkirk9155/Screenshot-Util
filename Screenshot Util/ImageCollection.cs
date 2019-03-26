@@ -30,14 +30,13 @@ namespace Screenshot_Util
             Info = gridRow.Cells["Info"].Value.ToString();
             Created = Convert.ToDateTime(gridRow.Cells["DateCreated"].Value);
             Modified = Convert.ToDateTime(gridRow.Cells["DateModified"].Value);
-
             Images = new List<Thumbnail>();
             SaveStrings = new Dictionary<string, string>();
 
-            string infoPath = Path.Remove(Path.LastIndexOf("\\") + 1) + "info.txt";
+            string infoPath = Path + @"\" + "info.txt";
             if (!File.Exists(infoPath))
             {
-                File.WriteAllText(infoPath, Name + "|" + Info);
+                File.WriteAllText(infoPath, "");
                 System.Threading.Thread.Sleep(500);
             }
 
@@ -45,13 +44,11 @@ namespace Screenshot_Util
             for (int i = 1; i < fileContents.Length; i++)
             {
                 string[] line = fileContents[i].Split('|');
-                Images.Add(new Thumbnail
+                this.Images.Add(new Thumbnail
                 {
                     FileName = line[0],
                     ImageName = line[1],
-                    Info = line[2],
-                    DateCreated = line[3],
-                    DateModified = line[4]
+                    Info = line[2]
                 });
             }
         }
@@ -59,15 +56,13 @@ namespace Screenshot_Util
 
         public void NewScreenshot(string fileName)
         {
-            Images.Add(new Thumbnail
+            this.Images.Add(new Thumbnail
             {
                 DateCreated = DateTime.Now.ToString(),
                 DateModified = DateTime.Now.ToString(),
                 FileName = fileName
             });
         }
-
-
 
 
         //public class ThumbInfo

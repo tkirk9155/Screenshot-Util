@@ -23,18 +23,20 @@ namespace Screenshot_Util
         private void FillDataGrid()
         {
             grdBrowseFiles.DataSource = Main.GetFilesList();
+            grdBrowseFiles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
         }
 
 
 
         private void grdBrowseFiles_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            Main.OpenCollection(grdBrowseFiles.CurrentRow);
-            tabMain.SelectTab(tabOpen);
-            foreach (Thumbnail thumb in Main.CurrentCollection.Images)
-            {
-                flowPanel.Controls.Add(thumb);
-            }
+            //Main.OpenCollection(grdBrowseFiles.CurrentRow);
+            //tabMain.SelectTab(tabOpen);
+            //foreach (Thumbnail thumb in Main.CurrentCollection.Images)
+            //{
+            //    flowPanel.Controls.Add(thumb);
+            //}
+            OpenCollection();
         }
 
 
@@ -44,8 +46,7 @@ namespace Screenshot_Util
             switch (e.ClickedItem.Name.ToLower())
             {
                 case "tsbnew":
-                    Main.NewCollection();
-                    OpenCollection();
+                    NewCollection();
                     break;
 
                 case "tsbopen":
@@ -59,6 +60,13 @@ namespace Screenshot_Util
         }
 
 
+        public void NewCollection()
+        {
+            if (Main.NewCollection())
+                OpenCollection();
+        }
+
+
         public void NewScreenshot()
         {
             if (Main.NewScreenshot())
@@ -68,17 +76,26 @@ namespace Screenshot_Util
         }
 
 
+
         public void OpenCollection()
         {
-            if(grdBrowseFiles.Rows.Count != Main.GridDatasource.Rows.Count)
+            //if(grdBrowseFiles.Rows.Count != Main.GridDatasource.Rows.Count)
+            //{
+            //    grdBrowseFiles.DataSource = null;
+            //    grdBrowseFiles.DataSource = Main.GridDatasource;
+            //    grdBrowseFiles.Refresh();
+            //}
+            Main.OpenCollection(grdBrowseFiles.CurrentRow);
+            //Main.OpenCollection(grdBrowseFiles.Rows[grdBrowseFiles.Rows.Count - 1]);
+            foreach (Thumbnail thumb in Main.CurrentCollection.Images)
             {
-                grdBrowseFiles.DataSource = null;
-                grdBrowseFiles.DataSource = Main.GridDatasource;
-                grdBrowseFiles.Refresh();
+                flowPanel.Controls.Add(thumb);
             }
-            Main.OpenCollection(grdBrowseFiles.Rows[grdBrowseFiles.Rows.Count - 1]);
+
             tabMain.SelectTab(tabOpen);
         }
+
+
 
         private void frmMain_Load(object sender, EventArgs e)
         {
@@ -127,9 +144,29 @@ namespace Screenshot_Util
 
             txtName.Text = inf.Name;
             txtDescription.Text = inf.Info;
+            picDisplay.Image = Image.FromFile(inf.FileName);
+            if (inf.DateModified == null || inf.DateCreated == null)
+            {
+                string[] dates = Main.GetFileDates(inf.FileName);
+                inf.DateCreated = dates[0];
+                inf.DateModified = dates[1];
+            }
             lblDateCreated.Text = inf.DateCreated;
             lblDateModified.Text = inf.DateModified;
-            picDisplay.Image = Image.FromFile(inf.FileName);
+
+            Main.ActiveThumbnail = inf;
+            txtDescription.TextChanged += (o, i) => { Main.ActiveThumbnail.Info = txtDescription.Text; };
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            Main.SaveImageInfo();
+        }
+
+
+        private void Description_Changed(object sender, EventArgs e)
+        {
+            Main.ActiveThumbnail.Info = txtDescription.Text;
         }
     }
 }
