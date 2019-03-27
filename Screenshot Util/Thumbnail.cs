@@ -20,6 +20,25 @@ namespace Screenshot_Util
         public string DateCreated;
         public string DateModified;
 
+        private string _originalName;
+        private string _originalInfo;
+
+        public string OriginalName
+        {
+            get
+            {
+                return _originalName;
+            }
+        }
+
+        public string OriginalInfo
+        {
+            get
+            {
+                return _originalInfo;
+            }
+        }
+
         private bool _thumbnailCallback() { return false; }
 
         public Thumbnail()
@@ -34,7 +53,10 @@ namespace Screenshot_Util
             Image img = Bitmap.FromFile(FileName);
             img.GetThumbnailImage(Width, Height, imgCallback, IntPtr.Zero);
             picThumbnail.Image = img;
+            lblDescription.Text = ImageName;
             lblDescription.BackColor = Color.Transparent;
+            _originalName = this.ImageName;
+            _originalInfo = this.Info;
         }
     }
 }
