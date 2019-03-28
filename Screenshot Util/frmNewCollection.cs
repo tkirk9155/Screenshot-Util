@@ -12,6 +12,8 @@ namespace Screenshot_Util
 {
     public partial class frmNewCollection : Form
     {
+        public string NewDirectory;
+
         public frmNewCollection()
         {
             InitializeComponent();

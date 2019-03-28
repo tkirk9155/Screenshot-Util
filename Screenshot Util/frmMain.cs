@@ -15,34 +15,15 @@ namespace Screenshot_Util
     public partial class frmMain : Form
     {
         private System.Nullable<Point> _prevPoint;
-        private Pen _pen;
-        private DrawMode _drawMode;
+        private Pen _drawPen;
+        private DrawMode _drawMode = DrawMode.Pen;
+        private Color _drawColor = Color.Red;
+        private Dictionary<string, ImageCollectionInfo> _listFiles;
 
 
         public frmMain()
         {
             InitializeComponent();
-        }
-
-
-
-        private void FillDataGrid()
-        {
-            grdBrowseFiles.DataSource = Main.GetFilesList();
-            grdBrowseFiles.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-        }
-
-
-
-        private void grdBrowseFiles_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            //Main.OpenCollection(grdBrowseFiles.CurrentRow);
-            //tabMain.SelectTab(tabOpen);
-            //foreach (Thumbnail thumb in Main.CurrentCollection.Images)
-            //{
-            //    flowPanel.Controls.Add(thumb);
-            //}
-            OpenCollection();
         }
 
 
@@ -64,7 +45,7 @@ namespace Screenshot_Util
                     break;
 
                 case "tsbdeletescreenshot":
-                    
+                    DeleteScreenshot();
                     break;
 
                 case "tsbbrowse":
@@ -89,7 +70,14 @@ namespace Screenshot_Util
             if (img != null)
             {
                 DisposeImage();
-                picDisplay.Image = Image.FromFile(img);
+                if (img != Main.ActiveThumbnail.FileName)
+                    Main.ActiveThumbnail.TempFile = img;
+                else
+                    Main.ActiveThumbnail.TempFile = null;
+
+                using (var bmp = new Bitmap(img))
+                    picDisplay.Image = new Bitmap(bmp);
+
                 picDisplay.Invalidate();
             }
         }
@@ -111,6 +99,25 @@ namespace Screenshot_Util
             }
         }
 
+
+        
+        private void ExitButtons()
+        {
+            barMenuOpen.Enabled = false;
+            tsbNew.Enabled = true;
+            tsbOpen.Enabled = true;
+            tsbSaveCollection.Enabled = false;
+        }
+
+
+
+        private void OpenButtons()
+        {
+            barMenuOpen.Enabled = true;
+            tsbNew.Enabled = false;
+            tsbOpen.Enabled = false;
+            tsbSaveCollection.Enabled = true;
+        }
 
 
         private int BrowseForImage()
@@ -135,14 +142,7 @@ namespace Screenshot_Util
 
         public void OpenCollection()
         {
-            //if(grdBrowseFiles.Rows.Count != Main.GridDatasource.Rows.Count)
-            //{
-            //    grdBrowseFiles.DataSource = null;
-            //    grdBrowseFiles.DataSource = Main.GridDatasource;
-            //    grdBrowseFiles.Refresh();
-            //}
-            Main.OpenCollection(grdBrowseFiles.CurrentRow);
-            //Main.OpenCollection(grdBrowseFiles.Rows[grdBrowseFiles.Rows.Count - 1]);
+            Main.OpenCollection(_listFiles[lstFiles.SelectedItem.ToString()].Path);
             foreach (Thumbnail thumb in Main.CurrentCollection.Images)
             {
                 flowPanel.Controls.Add(thumb);
@@ -150,6 +150,16 @@ namespace Screenshot_Util
 
             tabMain.SelectTab(tabOpen);
             FlowPanel_SelectFirst();
+
+            txtNameCollect.Text = Main.CurrentCollection.Name;
+            txtDescriptionCollect.Text = Main.CurrentCollection.Description;
+            txtNameCollect.TextChanged += CollectionName_Changed;
+            txtDescriptionCollect.TextChanged += CollectionDescription_Changed;
+
+            lblCreatedCollect.Text = Main.CurrentCollection.DateCreated.ToString();
+            lblModifiedCollect.Text = Main.CurrentCollection.DateModified.ToString();
+
+            OpenButtons();
         }
 
 
@@ -160,8 +170,24 @@ namespace Screenshot_Util
             tabMain.ItemSize = new Size(0, 1);
             tabMain.SizeMode = TabSizeMode.Fixed;
 
-            FillDataGrid();
+            //FillDataGrid();
+            GetFilesList();
         }
+
+
+
+
+        private void GetFilesList()
+        {
+            _listFiles = new Dictionary<string, ImageCollectionInfo>();
+            foreach(string folder in Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\Snips"))
+            {
+                ImageCollectionInfo file = new ImageCollectionInfo(folder);
+                _listFiles.Add(file.Name, file);
+                lstFiles.Items.Add(file.Name);
+            }
+        }
+
 
 
 
@@ -189,8 +215,8 @@ namespace Screenshot_Util
         {
             DisposeImage();
 
-            txtDescription.TextChanged -= Description_Changed;
-            txtName.TextChanged -= Name_Changed;
+            txtDescription.TextChanged -= ImageDescription_Changed;
+            txtName.TextChanged -= ImageName_Changed;
             if (Main.ActiveThumbnail != null)
                 Main.ActiveThumbnail.BorderStyle = BorderStyle.FixedSingle;
 
@@ -199,20 +225,14 @@ namespace Screenshot_Util
 
             txtName.Text = Main.ActiveThumbnail.ImageName;
             txtDescription.Text = Main.ActiveThumbnail.Info;
-            picDisplay.Image = Image.FromFile(Main.ActiveThumbnail.FileName);
+            using (var bmp = new Bitmap(Main.ActiveThumbnail.TempFile != null ? Main.ActiveThumbnail.TempFile : Main.ActiveThumbnail.FileName))
+                picDisplay.Image = new Bitmap(bmp);
 
             lblDateCreated.Text = "Created: " + Main.ActiveThumbnail.DateCreated;
             lblDateModified.Text = "Modified: " + Main.ActiveThumbnail.DateModified;
 
-            txtDescription.TextChanged += Description_Changed;
-            txtName.TextChanged += Name_Changed;
-        }
-
-
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            //Main.SaveCollection();
+            txtDescription.TextChanged += ImageDescription_Changed;
+            txtName.TextChanged += ImageName_Changed;
         }
 
 
@@ -234,21 +254,40 @@ namespace Screenshot_Util
 
 
 
-        private void Description_Changed(object sender, EventArgs e)
+        private void ImageDescription_Changed(object sender, EventArgs e)
         {
             Main.ActiveThumbnail.Info = txtDescription.Text;
         }
 
-        private void Name_Changed(object sender, EventArgs e)
+        private void ImageName_Changed(object sender, EventArgs e)
         {
             Main.ActiveThumbnail.ImageName = txtName.Text;
             Main.ActiveThumbnail.lblDescription.Text = Main.ActiveThumbnail.ImageName;
         }
+        
+        private void CollectionDescription_Changed(object sender, EventArgs e)
+        {
+            Main.CurrentCollection.Description = txtDescriptionCollect.Text;
+        }
+
+        private void CollectionName_Changed(object sender, EventArgs e)
+        {
+            Main.CurrentCollection.Name = txtNameCollect.Text;
+        }
+
+        
+
+
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            txtName.Text = Main.ActiveThumbnail.OriginalName;
-            txtDescription.Text = Main.ActiveThumbnail.OriginalInfo;
+            Thumbnail a = Main.ActiveThumbnail;
+            txtName.Text = a.OriginalName;
+            txtDescription.Text = a.OriginalInfo;
+            string folder = a.TempFile.Remove(a.TempFile.LastIndexOf(@"\"));
+            Main.DeleteFolderAsync(folder);
+            a.TempFile = null;
+            Thumbnail_Click(a.picThumbnail, new EventArgs());
         }
 
 
@@ -258,11 +297,11 @@ namespace Screenshot_Util
             switch (_drawMode)
             {
                 case DrawMode.Pen:
-                    _pen = new Pen(Color.Red, 3);
+                    _drawPen = new Pen(_drawColor, 3);
                     break;
 
                 case DrawMode.Highlight:
-                    _pen = new Pen(Color.FromArgb(48, 255, 255, 0), 30);
+                    _drawPen = new Pen(Color.FromArgb(48, _drawColor), 30);
                     break;
             }
 
@@ -277,20 +316,27 @@ namespace Screenshot_Util
                 if(_prevPoint != null)
                 {
                     using (Graphics g = Graphics.FromImage(picDisplay.Image))
-                        g.DrawLine(_pen, _prevPoint.Value, e.Location);
+                        g.DrawLine(_drawPen, _prevPoint.Value, e.Location);
                     picDisplay.Invalidate();
                     _prevPoint = e.Location;
                 }
             }
         }
 
+
+
         private void picDisplay_MouseUp(object sender, MouseEventArgs e)
         {
-            _prevPoint = null;
-            _pen.Dispose();
-            _pen = null;
-            Main.SaveTempImage(picDisplay.Image);
+            if (_prevPoint != null)
+            {
+                _prevPoint = null;
+                _drawPen.Dispose();
+                _drawPen = null;
+                Main.SaveTempImage(picDisplay.Image);
+            }
         }
+
+
 
         private void tsbDrawMode_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -304,12 +350,56 @@ namespace Screenshot_Util
                     _drawMode = DrawMode.Highlight;
                     break;
             }
+            GetDrawPen(_drawMode);
         }
+
+
+
+        private void GetDrawPen(DrawMode mode)
+        {
+            using (ColorDialog colorDialog = new ColorDialog())
+            {
+                if (colorDialog.ShowDialog() == DialogResult.OK)
+                {
+                    _drawColor = colorDialog.Color;
+                }
+                else
+                {
+                    if (mode == DrawMode.Pen)
+                        _drawColor = Color.Red;
+                    else
+                        _drawColor = Color.Yellow;
+                }
+            }
+        }
+
+
+        
+        private void lstFiles_DoubleClick(object sender, EventArgs e)
+        {
+            OpenCollection();
+        }
+
+
 
         private enum DrawMode
         {
             Pen = 0,
             Highlight = 1
+        }
+
+
+
+        private void lstFiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(lstFiles.SelectedIndex >= 0)
+            {
+                string labelText = "{0}\nDescription: {1}\nSize: {2}\n{3} images\n\nCreated on {4}\nLast modified {5}";
+
+                ImageCollectionInfo info = _listFiles[lstFiles.SelectedItem.ToString()];
+                lblInfo.Text = string.Format(labelText,
+                    info.Name, info.Description, info.Size, info.Files, info.DateCreated, info.DateModified);
+            }
         }
     }
 }

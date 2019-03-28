@@ -8,30 +8,37 @@ using System.IO;
 
 namespace Screenshot_Util
 {
-    public class ImageCollection
+    public class ImageCollection : ImageCollectionInfo
     {
-        public string Name;
-        public string Path;
-        public string Size;
-        public int Files;
-        public string Info;
-        public DateTime Created;
-        public DateTime Modified;
+        private string _originalName;
+        private string _originalInfo;
+
+        public string OriginalName
+        {
+            get
+            {
+                return _originalName;
+            }
+        }
+
+        public string OriginalInfo
+        {
+            get
+            {
+                return _originalInfo;
+            }
+        }
+
         public List<Thumbnail> Images;
-        public Dictionary<String, String> SaveStrings;
+        //public Dictionary<String, String> SaveStrings;
         //private ImageCollection _imageCollection;
 
-        public ImageCollection(System.Windows.Forms.DataGridViewRow gridRow)
+
+
+        public ImageCollection(string folderPath) 
+            : base(folderPath)
         {
-            Name = gridRow.Cells["Name"].Value.ToString();
-            Path = gridRow.Cells["Directory"].Value.ToString();
-            Size = gridRow.Cells["Size"].Value.ToString();
-            Files = Convert.ToInt32(gridRow.Cells["NumberPhotos"].Value);
-            Info = gridRow.Cells["Info"].Value.ToString();
-            Created = Convert.ToDateTime(gridRow.Cells["DateCreated"].Value);
-            Modified = Convert.ToDateTime(gridRow.Cells["DateModified"].Value);
             Images = new List<Thumbnail>();
-            SaveStrings = new Dictionary<string, string>();
 
             string infoPath = Path + @"\" + "info.txt";
             if (!File.Exists(infoPath))
@@ -46,7 +53,7 @@ namespace Screenshot_Util
                 string[] line = fileContents[i].Split('|');
                 string[] dates = GetFileDates(line[0]);
 
-                this.Images.Add(new Thumbnail
+                Images.Add(new Thumbnail
                 {
                     FileName = line[0],
                     ImageName = line[1],
@@ -55,6 +62,9 @@ namespace Screenshot_Util
                     DateModified = dates[1]
                 });
             }
+
+            _originalName = Name;
+            _originalInfo = Description;
         }
 
 

@@ -19,6 +19,7 @@ namespace Screenshot_Util
         public string Info;
         public string DateCreated;
         public string DateModified;
+        public string TempFile;
 
         private string _originalName;
         private string _originalInfo;
@@ -50,9 +51,12 @@ namespace Screenshot_Util
         private void Thumbnail_Load(object sender, EventArgs e)
         {
             var imgCallback = new Image.GetThumbnailImageAbort(_thumbnailCallback);
-            Image img = Bitmap.FromFile(FileName);
-            img.GetThumbnailImage(Width, Height, imgCallback, IntPtr.Zero);
-            picThumbnail.Image = img;
+            //Image img = Bitmap.FromFile(FileName);
+            using (var img = new Bitmap(this.FileName))
+            {
+                img.GetThumbnailImage(Width, Height, imgCallback, IntPtr.Zero);
+                picThumbnail.Image = new Bitmap(img);
+            }
             lblDescription.Text = ImageName;
             lblDescription.BackColor = Color.Transparent;
             _originalName = this.ImageName;

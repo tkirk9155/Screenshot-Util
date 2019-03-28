@@ -31,10 +31,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.barMenu = new System.Windows.Forms.ToolStrip();
             this.tsbNew = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbOpen = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbSaveCollection = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbDeleteCollection = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabBrowse = new System.Windows.Forms.TabPage();
-            this.grdBrowseFiles = new System.Windows.Forms.DataGridView();
+            this.lstFiles = new System.Windows.Forms.ListBox();
             this.tabOpen = new System.Windows.Forms.TabPage();
             this.picDisplay = new System.Windows.Forms.PictureBox();
             this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
@@ -42,42 +49,37 @@
             this.txtDescription = new System.Windows.Forms.RichTextBox();
             this.lblDateCreated = new System.Windows.Forms.Label();
             this.lblDateModified = new System.Windows.Forms.Label();
-            this.btnSave = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
             this.lblName = new System.Windows.Forms.Label();
             this.lblDescription = new System.Windows.Forms.Label();
-            this.tsbDeleteCollection = new System.Windows.Forms.ToolStripButton();
-            this.tsbSaveCollection = new System.Windows.Forms.ToolStripButton();
             this.infoPanelImg = new System.Windows.Forms.GroupBox();
             this.sidePanel = new System.Windows.Forms.Panel();
             this.infoPanelMain = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.lblNameCollect = new System.Windows.Forms.Label();
+            this.btnResetCollect = new System.Windows.Forms.Button();
+            this.txtNameCollect = new System.Windows.Forms.TextBox();
+            this.txtDescriptionCollect = new System.Windows.Forms.RichTextBox();
+            this.lblModifiedCollect = new System.Windows.Forms.Label();
+            this.lblCreatedCollect = new System.Windows.Forms.Label();
+            this.lblDescriptionCollect = new System.Windows.Forms.Label();
             this.tsbScreenshot = new System.Windows.Forms.ToolStripButton();
             this.tsbDeleteScreenshot = new System.Windows.Forms.ToolStripButton();
             this.barMenuOpen = new System.Windows.Forms.ToolStrip();
-            this.tsbBrowse = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbBrowse = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbDrawMode = new System.Windows.Forms.ToolStripSplitButton();
             this.tsbPen = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbHighlight = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbUndo = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbUndo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbExitCollection = new System.Windows.Forms.ToolStripButton();
+            this.lblInfo = new System.Windows.Forms.Label();
             this.barMenu.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabBrowse.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.grdBrowseFiles)).BeginInit();
             this.tabOpen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
             this.infoPanelImg.SuspendLayout();
@@ -95,7 +97,9 @@
             this.toolStripSeparator2,
             this.tsbSaveCollection,
             this.toolStripSeparator3,
-            this.tsbDeleteCollection});
+            this.tsbDeleteCollection,
+            this.toolStripSeparator9,
+            this.tsbExit});
             this.barMenu.Location = new System.Drawing.Point(0, 0);
             this.barMenu.Name = "barMenu";
             this.barMenu.Size = new System.Drawing.Size(1068, 25);
@@ -111,6 +115,11 @@
             this.tsbNew.Size = new System.Drawing.Size(104, 22);
             this.tsbNew.Text = "new collection";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
             // tsbOpen
             // 
             this.tsbOpen.Image = ((System.Drawing.Image)(resources.GetObject("tsbOpen.Image")));
@@ -118,6 +127,45 @@
             this.tsbOpen.Name = "tsbOpen";
             this.tsbOpen.Size = new System.Drawing.Size(109, 22);
             this.tsbOpen.Text = "open collection";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbSaveCollection
+            // 
+            this.tsbSaveCollection.Image = ((System.Drawing.Image)(resources.GetObject("tsbSaveCollection.Image")));
+            this.tsbSaveCollection.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbSaveCollection.Name = "tsbSaveCollection";
+            this.tsbSaveCollection.Size = new System.Drawing.Size(105, 22);
+            this.tsbSaveCollection.Text = "save collection";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbDeleteCollection
+            // 
+            this.tsbDeleteCollection.Image = ((System.Drawing.Image)(resources.GetObject("tsbDeleteCollection.Image")));
+            this.tsbDeleteCollection.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDeleteCollection.Name = "tsbDeleteCollection";
+            this.tsbDeleteCollection.Size = new System.Drawing.Size(114, 22);
+            this.tsbDeleteCollection.Text = "delete collection";
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbExit
+            // 
+            this.tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
+            this.tsbExit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbExit.Name = "tsbExit";
+            this.tsbExit.Size = new System.Drawing.Size(45, 22);
+            this.tsbExit.Text = "exit";
             // 
             // tabMain
             // 
@@ -135,24 +183,28 @@
             // 
             // tabBrowse
             // 
-            this.tabBrowse.Controls.Add(this.grdBrowseFiles);
+            this.tabBrowse.Controls.Add(this.lblInfo);
+            this.tabBrowse.Controls.Add(this.lstFiles);
             this.tabBrowse.Location = new System.Drawing.Point(4, 22);
             this.tabBrowse.Name = "tabBrowse";
             this.tabBrowse.Padding = new System.Windows.Forms.Padding(3);
-            this.tabBrowse.Size = new System.Drawing.Size(806, 490);
+            this.tabBrowse.Size = new System.Drawing.Size(806, 604);
             this.tabBrowse.TabIndex = 0;
             this.tabBrowse.Text = "tabPage1";
             this.tabBrowse.UseVisualStyleBackColor = true;
             // 
-            // grdBrowseFiles
+            // lstFiles
             // 
-            this.grdBrowseFiles.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdBrowseFiles.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grdBrowseFiles.Location = new System.Drawing.Point(3, 3);
-            this.grdBrowseFiles.Name = "grdBrowseFiles";
-            this.grdBrowseFiles.Size = new System.Drawing.Size(800, 484);
-            this.grdBrowseFiles.TabIndex = 0;
-            this.grdBrowseFiles.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grdBrowseFiles_CellDoubleClick);
+            this.lstFiles.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lstFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstFiles.FormattingEnabled = true;
+            this.lstFiles.ItemHeight = 16;
+            this.lstFiles.Location = new System.Drawing.Point(3, 3);
+            this.lstFiles.Name = "lstFiles";
+            this.lstFiles.Size = new System.Drawing.Size(424, 598);
+            this.lstFiles.TabIndex = 1;
+            this.lstFiles.SelectedIndexChanged += new System.EventHandler(this.lstFiles_SelectedIndexChanged);
+            this.lstFiles.DoubleClick += new System.EventHandler(this.lstFiles_DoubleClick);
             // 
             // tabOpen
             // 
@@ -229,21 +281,10 @@
             this.lblDateModified.TabIndex = 4;
             this.lblDateModified.Text = "date modified";
             // 
-            // btnSave
-            // 
-            this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(4, 275);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 30);
-            this.btnSave.TabIndex = 5;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
             // btnReset
             // 
             this.btnReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.Location = new System.Drawing.Point(168, 275);
+            this.btnReset.Location = new System.Drawing.Point(3, 286);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(75, 30);
             this.btnReset.TabIndex = 5;
@@ -271,28 +312,11 @@
             this.lblDescription.TabIndex = 4;
             this.lblDescription.Text = "Description";
             // 
-            // tsbDeleteCollection
-            // 
-            this.tsbDeleteCollection.Image = ((System.Drawing.Image)(resources.GetObject("tsbDeleteCollection.Image")));
-            this.tsbDeleteCollection.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDeleteCollection.Name = "tsbDeleteCollection";
-            this.tsbDeleteCollection.Size = new System.Drawing.Size(114, 22);
-            this.tsbDeleteCollection.Text = "delete collection";
-            // 
-            // tsbSaveCollection
-            // 
-            this.tsbSaveCollection.Image = ((System.Drawing.Image)(resources.GetObject("tsbSaveCollection.Image")));
-            this.tsbSaveCollection.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbSaveCollection.Name = "tsbSaveCollection";
-            this.tsbSaveCollection.Size = new System.Drawing.Size(105, 22);
-            this.tsbSaveCollection.Text = "save collection";
-            // 
             // infoPanelImg
             // 
             this.infoPanelImg.Controls.Add(this.lblName);
             this.infoPanelImg.Controls.Add(this.btnReset);
             this.infoPanelImg.Controls.Add(this.txtName);
-            this.infoPanelImg.Controls.Add(this.btnSave);
             this.infoPanelImg.Controls.Add(this.txtDescription);
             this.infoPanelImg.Controls.Add(this.lblDateModified);
             this.infoPanelImg.Controls.Add(this.lblDateCreated);
@@ -320,14 +344,13 @@
             // 
             // infoPanelMain
             // 
-            this.infoPanelMain.Controls.Add(this.label1);
-            this.infoPanelMain.Controls.Add(this.button1);
-            this.infoPanelMain.Controls.Add(this.textBox1);
-            this.infoPanelMain.Controls.Add(this.button2);
-            this.infoPanelMain.Controls.Add(this.richTextBox1);
-            this.infoPanelMain.Controls.Add(this.label2);
-            this.infoPanelMain.Controls.Add(this.label3);
-            this.infoPanelMain.Controls.Add(this.label4);
+            this.infoPanelMain.Controls.Add(this.lblNameCollect);
+            this.infoPanelMain.Controls.Add(this.btnResetCollect);
+            this.infoPanelMain.Controls.Add(this.txtNameCollect);
+            this.infoPanelMain.Controls.Add(this.txtDescriptionCollect);
+            this.infoPanelMain.Controls.Add(this.lblModifiedCollect);
+            this.infoPanelMain.Controls.Add(this.lblCreatedCollect);
+            this.infoPanelMain.Controls.Add(this.lblDescriptionCollect);
             this.infoPanelMain.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.infoPanelMain.Location = new System.Drawing.Point(0, 336);
             this.infoPanelMain.Name = "infoPanelMain";
@@ -337,82 +360,72 @@
             this.infoPanelMain.TabStop = false;
             this.infoPanelMain.Text = "Collection";
             // 
-            // label1
+            // lblNameCollect
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(2, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 15);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Name";
+            this.lblNameCollect.AutoSize = true;
+            this.lblNameCollect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblNameCollect.Location = new System.Drawing.Point(2, 21);
+            this.lblNameCollect.Name = "lblNameCollect";
+            this.lblNameCollect.Size = new System.Drawing.Size(41, 15);
+            this.lblNameCollect.TabIndex = 4;
+            this.lblNameCollect.Text = "Name";
             // 
-            // button1
+            // btnResetCollect
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(168, 275);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 30);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Reset";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnResetCollect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnResetCollect.Location = new System.Drawing.Point(3, 286);
+            this.btnResetCollect.Name = "btnResetCollect";
+            this.btnResetCollect.Size = new System.Drawing.Size(75, 30);
+            this.btnResetCollect.TabIndex = 5;
+            this.btnResetCollect.Text = "Reset";
+            this.btnResetCollect.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // txtNameCollect
             // 
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(3, 42);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(245, 21);
-            this.textBox1.TabIndex = 2;
+            this.txtNameCollect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNameCollect.Location = new System.Drawing.Point(3, 42);
+            this.txtNameCollect.Name = "txtNameCollect";
+            this.txtNameCollect.Size = new System.Drawing.Size(245, 21);
+            this.txtNameCollect.TabIndex = 2;
             // 
-            // button2
+            // txtDescriptionCollect
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(4, 275);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 30);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Save";
-            this.button2.UseVisualStyleBackColor = true;
+            this.txtDescriptionCollect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDescriptionCollect.Location = new System.Drawing.Point(4, 104);
+            this.txtDescriptionCollect.Name = "txtDescriptionCollect";
+            this.txtDescriptionCollect.Size = new System.Drawing.Size(244, 92);
+            this.txtDescriptionCollect.TabIndex = 3;
+            this.txtDescriptionCollect.Text = "";
             // 
-            // richTextBox1
+            // lblModifiedCollect
             // 
-            this.richTextBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(4, 104);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(244, 92);
-            this.richTextBox1.TabIndex = 3;
-            this.richTextBox1.Text = "";
+            this.lblModifiedCollect.AutoSize = true;
+            this.lblModifiedCollect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblModifiedCollect.Location = new System.Drawing.Point(2, 239);
+            this.lblModifiedCollect.Name = "lblModifiedCollect";
+            this.lblModifiedCollect.Size = new System.Drawing.Size(82, 15);
+            this.lblModifiedCollect.TabIndex = 4;
+            this.lblModifiedCollect.Text = "date modified";
             // 
-            // label2
+            // lblCreatedCollect
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(2, 239);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 15);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "date modified";
+            this.lblCreatedCollect.AutoSize = true;
+            this.lblCreatedCollect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCreatedCollect.Location = new System.Drawing.Point(2, 211);
+            this.lblCreatedCollect.Name = "lblCreatedCollect";
+            this.lblCreatedCollect.Size = new System.Drawing.Size(75, 15);
+            this.lblCreatedCollect.TabIndex = 4;
+            this.lblCreatedCollect.Text = "date created";
             // 
-            // label3
+            // lblDescriptionCollect
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(2, 211);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(75, 15);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "date created";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(2, 83);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(69, 15);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Description";
+            this.lblDescriptionCollect.AutoSize = true;
+            this.lblDescriptionCollect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDescriptionCollect.Location = new System.Drawing.Point(2, 83);
+            this.lblDescriptionCollect.Name = "lblDescriptionCollect";
+            this.lblDescriptionCollect.Size = new System.Drawing.Size(69, 15);
+            this.lblDescriptionCollect.TabIndex = 4;
+            this.lblDescriptionCollect.Text = "Description";
             // 
             // tsbScreenshot
             // 
@@ -441,13 +454,20 @@
             this.toolStripSeparator6,
             this.tsbDrawMode,
             this.toolStripSeparator7,
-            this.tsbUndo});
+            this.tsbUndo,
+            this.toolStripSeparator8,
+            this.tsbExitCollection});
             this.barMenuOpen.Location = new System.Drawing.Point(0, 25);
             this.barMenuOpen.Name = "barMenuOpen";
             this.barMenuOpen.Size = new System.Drawing.Size(814, 25);
             this.barMenuOpen.TabIndex = 8;
             this.barMenuOpen.Text = "toolStrip1";
             this.barMenuOpen.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.barMenu_ItemClicked);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbBrowse
             // 
@@ -457,30 +477,15 @@
             this.tsbBrowse.Size = new System.Drawing.Size(101, 22);
             this.tsbBrowse.Text = "browse image";
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
-            // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbDrawMode
             // 
@@ -497,14 +502,19 @@
             // tsbPen
             // 
             this.tsbPen.Name = "tsbPen";
-            this.tsbPen.Size = new System.Drawing.Size(180, 22);
+            this.tsbPen.Size = new System.Drawing.Size(124, 22);
             this.tsbPen.Text = "Pen";
             // 
             // tsbHighlight
             // 
             this.tsbHighlight.Name = "tsbHighlight";
-            this.tsbHighlight.Size = new System.Drawing.Size(180, 22);
+            this.tsbHighlight.Size = new System.Drawing.Size(124, 22);
             this.tsbHighlight.Text = "Highlight";
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbUndo
             // 
@@ -514,15 +524,27 @@
             this.tsbUndo.Size = new System.Drawing.Size(55, 22);
             this.tsbUndo.Text = "undo";
             // 
-            // toolStripSeparator6
+            // toolStripSeparator8
             // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripSeparator7
+            // tsbExitCollection
             // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+            this.tsbExitCollection.Image = ((System.Drawing.Image)(resources.GetObject("tsbExitCollection.Image")));
+            this.tsbExitCollection.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbExitCollection.Name = "tsbExitCollection";
+            this.tsbExitCollection.Size = new System.Drawing.Size(45, 22);
+            this.tsbExitCollection.Text = "exit";
+            // 
+            // lblInfo
+            // 
+            this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInfo.Location = new System.Drawing.Point(433, 101);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(367, 326);
+            this.lblInfo.TabIndex = 2;
+            this.lblInfo.Text = "label1";
             // 
             // frmMain
             // 
@@ -540,7 +562,6 @@
             this.barMenu.PerformLayout();
             this.tabMain.ResumeLayout(false);
             this.tabBrowse.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.grdBrowseFiles)).EndInit();
             this.tabOpen.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).EndInit();
             this.infoPanelImg.ResumeLayout(false);
@@ -561,7 +582,6 @@
         private System.Windows.Forms.TabControl tabMain;
         private System.Windows.Forms.TabPage tabBrowse;
         private System.Windows.Forms.TabPage tabOpen;
-        private System.Windows.Forms.DataGridView grdBrowseFiles;
         private System.Windows.Forms.FlowLayoutPanel flowPanel;
         private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripButton tsbOpen;
@@ -569,7 +589,6 @@
         private System.Windows.Forms.RichTextBox txtDescription;
         private System.Windows.Forms.Label lblDateCreated;
         private System.Windows.Forms.Label lblDateModified;
-        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.Label lblDescription;
@@ -579,14 +598,13 @@
         private System.Windows.Forms.GroupBox infoPanelImg;
         private System.Windows.Forms.Panel sidePanel;
         private System.Windows.Forms.GroupBox infoPanelMain;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblNameCollect;
+        private System.Windows.Forms.Button btnResetCollect;
+        private System.Windows.Forms.TextBox txtNameCollect;
+        private System.Windows.Forms.RichTextBox txtDescriptionCollect;
+        private System.Windows.Forms.Label lblModifiedCollect;
+        private System.Windows.Forms.Label lblCreatedCollect;
+        private System.Windows.Forms.Label lblDescriptionCollect;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -602,6 +620,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripButton tsbUndo;
+        private System.Windows.Forms.ListBox lstFiles;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripButton tsbExit;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripButton tsbExitCollection;
+        private System.Windows.Forms.Label lblInfo;
     }
 }
 

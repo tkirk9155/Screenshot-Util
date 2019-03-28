@@ -65,6 +65,7 @@
       <DependentUpon>frmScreenshot.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageCollection.cs" />
+    <Compile Include="ImageCollectionInfo.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
