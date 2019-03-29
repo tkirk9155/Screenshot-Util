@@ -8,6 +8,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using Screenshot_Util;
+using System.Windows.Forms;
 
 namespace Screenshot_Util
 {
@@ -15,6 +16,8 @@ namespace Screenshot_Util
     {
         public static ImageCollection CurrentCollection;
         public static Thumbnail ActiveThumbnail;
+        public static string Root = GetPath(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Snips");
+
 
 
         public static string GetCollectionInfo(DirectoryInfo dirInfo)
@@ -66,26 +69,29 @@ namespace Screenshot_Util
 
 
 
-        public static bool NewCollection()
+        public static string GetPath(string path, string file)
         {
-            bool result = false;
+            while (path.Trim().Last() == '\\')
+                path = path.Remove(path.Last());
+            path += @"\";
+
+            while (file.Trim().First() == '\\')
+                file = file.Substring(1);
+
+            return path + file;
+        }
+
+
+
+        public static string NewCollection()
+        {
+            string result = null;
             using (frmNewCollection frm = new frmNewCollection())
             {
                 frm.ShowDialog();
                 if (frm.DialogResult == System.Windows.Forms.DialogResult.OK)
                 {
-                    string dirName = frm.txtName.Text;
-                    Directory.CreateDirectory("C:\\Users\\tkirk\\Pictures\\Snips\\" + dirName);
-                    //GridDatasource.Rows.Add(GridDatasource.NewRow());
-                    //GridDatasource.Rows[GridDatasource.Rows.Count - 1]["Name"] = dirName;
-                    //GridDatasource.Rows[GridDatasource.Rows.Count - 1]["Directory"] = "C:\\Users\\tkirk\\Pictures\\Snips\\" + dirName;
-                    //GridDatasource.Rows[GridDatasource.Rows.Count - 1]["Size"] = 0;
-                    //GridDatasource.Rows[GridDatasource.Rows.Count - 1]["NumberPhotos"] = 0;
-                    //GridDatasource.Rows[GridDatasource.Rows.Count - 1]["Info"] = frm.txtDescription.Text;
-                    //GridDatasource.Rows[GridDatasource.Rows.Count - 1]["DateCreated"] = DateTime.Now;
-                    //GridDatasource.Rows[GridDatasource.Rows.Count - 1]["DateModified"] = DateTime.Now;
-
-                    result = true;
+                    result = frm.NewDirectory;
                 }
             }
             return result;
@@ -109,10 +115,11 @@ namespace Screenshot_Util
             }
             else
             {
+                FileInfo fInfo = new FileInfo(filePath);
                 CurrentCollection.Images.Add(new Thumbnail()
                 {
-                    FileName = CopyFileToDirectory(filePath),
-                    DateCreated = DateTime.Now.ToString(),
+                    FilePath = CopyFileToDirectory(filePath),
+                    DateCreated = fInfo.CreationTime.ToString(),
                     DateModified = DateTime.Now.ToString(),
                 });
                 result = true;
@@ -121,6 +128,11 @@ namespace Screenshot_Util
             return result;
         }
 
+
+        public static void PrintImages()
+        {
+            Print.PrintImages(new List<Thumbnail> { CurrentCollection.Images[1] });
+        }
 
 
         private static string CopyFileToDirectory(string filePath)
@@ -133,55 +145,21 @@ namespace Screenshot_Util
 
 
 
-        public static async void SaveCollection()
+        public static void SaveCollection()
         {
-            // rename folder, reset Path properties on objects
-            if (CurrentCollection.Name != CurrentCollection.OriginalName)
+            CurrentCollection.Save();
+        }
+
+
+
+        public static void ExitCollection()
+        {
+            foreach(Thumbnail thumb in CurrentCollection.Images)
             {
-                string oldName = CurrentCollection.OriginalName;
-                string newName = CurrentCollection.Name;
-
-                await RenameFolderAsync(CurrentCollection.Path, newName);
-                foreach (Thumbnail thumb in CurrentCollection.Images)
-                {
-                    thumb.FileName = thumb.FileName.Replace(oldName, newName);
-                    if (thumb.TempFile != null)
-                        thumb.TempFile = thumb.TempFile.Replace(oldName, newName);
-                }
-
-                CurrentCollection.Name = newName;
-                CurrentCollection.Path = CurrentCollection.Path.Replace(oldName, newName);
+                thumb.picThumbnail.Image.Dispose();
+                thumb.picThumbnail.Image = null;
             }
-
-            string writeToFile = "";
-
-            writeToFile += CurrentCollection.Name + "|" + CurrentCollection.Description + Environment.NewLine;
-            string[] saveImages = CurrentCollection.Images.Select(x => x.FileName).ToArray();
-
-            foreach (Thumbnail thumb in CurrentCollection.Images)
-            {
-                if (thumb.TempFile != null)
-                {
-                    await DeleteFileAsync(thumb.FileName);
-                    File.Move(thumb.TempFile, thumb.FileName);
-                }
-
-                string contents = "{0}|{1}|{2}" + Environment.NewLine;
-                writeToFile += string.Format(contents, thumb.FileName, thumb.ImageName, thumb.Info);
-            }
-
-            File.WriteAllText(CurrentCollection.Path + @"\info.txt",
-                              writeToFile);
-
-            foreach (string folder in Directory.GetDirectories(CurrentCollection.Path))
-                await DeleteFolderAsync(folder);
-
-            foreach (string file in Directory.GetFiles(CurrentCollection.Path, "*.png"))
-            {
-                if (!saveImages.Contains(file))
-                    await DeleteFileAsync(file);
-            }
-
+            CurrentCollection = null;
         }
 
 
@@ -198,9 +176,32 @@ namespace Screenshot_Util
 
 
 
+        public static string GetImageFromClipboard()
+        {
+            string result = null;
+
+            try
+            {
+                using (Bitmap bmp = new Bitmap(Clipboard.GetImage()))
+                {
+                    result = GetRandomFileName();
+                    bmp.Save(result);
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return result;
+        }
+
+
+
         public static void SaveTempImage(Image img)
         {
-            string tempFolder = ActiveThumbnail.FileName;
+            string tempFolder = ActiveThumbnail.FilePath;
             tempFolder = tempFolder.Remove(tempFolder.LastIndexOf(".")).Substring(tempFolder.LastIndexOf(@"\") + 1);
             string tempPath = CurrentCollection.Path + @"\temp"
                 + tempFolder;
@@ -214,7 +215,7 @@ namespace Screenshot_Util
 
             string tempFile = tempPath + @"\" + fileName.ToString() + ".png";
             img.Save(tempFile);
-            Main.ActiveThumbnail.TempFile = tempFile;
+            Main.ActiveThumbnail.TempFilePath = tempFile;
         }
 
 
@@ -222,10 +223,16 @@ namespace Screenshot_Util
         public static string RestorePreviousImage()
         {
             string result = null;
-            string tempFolder = ActiveThumbnail.FileName;
-            tempFolder = tempFolder.Remove(tempFolder.LastIndexOf(".")).Substring(tempFolder.LastIndexOf(@"\") + 1);
-            string tempPath = CurrentCollection.Path + @"\temp"
-                + tempFolder;
+            string tempPath;
+            if (ActiveThumbnail.TempFilePath != null)
+            {
+                tempPath = ActiveThumbnail.TempFilePath;
+                tempPath = tempPath.Remove(tempPath.LastIndexOf('\\'));
+            }
+            else
+            {
+                return null;
+            }
 
             if (!Directory.Exists(tempPath))
                 return result;
@@ -246,7 +253,8 @@ namespace Screenshot_Util
             {
                 fileName = files[0].ToString() + ".png";
 
-                DeleteFileAsync(tempPath + @"\" + fileName);
+                DeleteFileAsync(GetPath(tempPath, fileName));
+                //DeleteFileAsync(tempPath + @"\" + fileName);
 
                 files.RemoveAt(0);
                 fileName = null;
@@ -255,14 +263,18 @@ namespace Screenshot_Util
             if (files.Count > 0)
             {
                 fileName = files[0].ToString() + ".png";
-                result = tempPath + @"\" + fileName;
+                result = GetPath(tempPath, fileName);
+                ActiveThumbnail.TempFilePath = null;
             }
             else
             {
                 if (Directory.Exists(tempPath))
+                {
                     DeleteFolderAsync(tempPath);
+                }
 
-                result = ActiveThumbnail.FileName;
+                result = ActiveThumbnail.FilePath;
+                ActiveThumbnail.TempFilePath = null;
             }
 
             return result;
@@ -270,7 +282,7 @@ namespace Screenshot_Util
 
 
 
-        private static async Task<int> DeleteFileAsync(string filePath)
+        public static async Task<int> DeleteFileAsync(string filePath)
         {
             int i;
             for (i = 0; i < 20; i++)
@@ -308,7 +320,7 @@ namespace Screenshot_Util
             return i;
         }
 
-        private static async Task<int> RenameFolderAsync(string oldPath, string newFolderName)
+        public static async Task<string> RenameFolderAsync(string oldPath, string newFolderName)
         {
             newFolderName = oldPath.Remove(oldPath.LastIndexOf(@"\") + 1) + newFolderName;
 
@@ -327,7 +339,7 @@ namespace Screenshot_Util
                     await Task.Delay(500);
                 }
             }
-            return i;
+            return newFolderName;
         }
 
     }

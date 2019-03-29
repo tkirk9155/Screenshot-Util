@@ -55,11 +55,11 @@ namespace Screenshot_Util
 
                 Images.Add(new Thumbnail
                 {
-                    FileName = line[0],
+                    FilePath = Main.GetPath(this.Path, line[0]),
                     ImageName = line[1],
                     Info = line[2],
                     DateCreated = dates[0],
-                    DateModified = dates[1]
+                    DateModified = dates[1],
                 });
             }
 
@@ -75,7 +75,7 @@ namespace Screenshot_Util
             {
                 DateCreated = DateTime.Now.ToString(),
                 DateModified = DateTime.Now.ToString(),
-                FileName = fileName
+                FilePath = fileName
             });
         }
 
@@ -93,40 +93,43 @@ namespace Screenshot_Util
 
 
 
-        public void RemoveDeletedImages()
+        public async void Save()
         {
-            string[] saveImages = this.Images.Select(x => x.FileName).ToArray();
-            foreach(string file in Directory.GetFiles(this.Path))
+            //if (Name != OriginalName)
+            //{
+            //    await Main.RenameFolderAsync(Path, Name);
+            //    foreach(Thumbnail thumb in Images)
+            //    {
+            //        if (thumb.TempFilePath != null)
+            //            thumb.TempFile = thumb.TempFile.Replace(OriginalName, Name);
+            //    }
+            //    Path = Path.Replace(OriginalName, Name);
+            //}
+
+            string writeToFile = Name + "|" + Description + Environment.NewLine;
+            string formatString = "{0}|{1}|{2}" + Environment.NewLine;
+
+            foreach (Thumbnail thumb in Images)
+            {
+                if(thumb.TempFilePath != null)
+                {
+                    await Main.DeleteFileAsync(thumb.FileName);
+                    File.Move(thumb.TempFilePath, thumb.FilePath);
+                }
+                writeToFile += string.Format(formatString, thumb.FileName, thumb.ImageName, thumb.Info);
+            }
+
+            File.WriteAllText(Main.GetPath(Path, "info.txt"), writeToFile);
+
+            foreach (string folder in Directory.GetDirectories(Path))
+                await Main.DeleteFolderAsync(folder);
+
+            string[] saveImages = Images.Select(x => x.FilePath).ToArray();
+            foreach (string file in Directory.GetFiles(Path, "*.png"))
             {
                 if (!saveImages.Contains(file))
-                    File.Delete(this.Path + @"\" + file);
+                    await Main.DeleteFileAsync(file);
             }
         }
-
-
-
-        public void RemovePendingImages()
-        {
-            string[] saveImages = File.ReadAllLines(this.Path + @"\info.txt");
-            for(int i = 1; i < saveImages.Length; i++)
-                saveImages[i] = saveImages[i].Remove(saveImages[i].IndexOf("|"));
-
-            foreach(string file in Directory.GetFiles(this.Path))
-            {
-                if (!saveImages.Contains(file))
-                    File.Delete(this.Path + @"\" + file);
-            }
-        }
-
-
-        //public class ThumbInfo
-        //{
-        //    public string FileName;
-        //    public string ImageName;
-        //    public string Info;
-        //    public string DateCreated;
-        //    public string DateModified;
-        //}
-
     }
 }

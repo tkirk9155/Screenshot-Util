@@ -155,7 +155,8 @@ namespace Screenshot_Util
                 DialogResult = DialogResult.OK;
                 Main.CurrentCollection.Images.Add(new Thumbnail()
                 {
-                    FileName = fileName,
+                    //FileName = fileName.Substring(fileName.LastIndexOf(@"\")),
+                    FilePath = fileName,
                     DateCreated = DateTime.Now.ToString(),
                     DateModified = DateTime.Now.ToString(),
                 });

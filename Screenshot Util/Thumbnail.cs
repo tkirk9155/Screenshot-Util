@@ -14,15 +14,33 @@ namespace Screenshot_Util
 {
     public partial class Thumbnail : UserControl
     {
-        public string FileName;
+        //public string FileName;
+        public string FilePath;
         public string ImageName;
         public string Info;
         public string DateCreated;
         public string DateModified;
-        public string TempFile;
+        //public string TempFileName;
+        public string TempFilePath;
 
         private string _originalName;
         private string _originalInfo;
+
+        public string FileName
+        {
+            get
+            {
+                return FilePath.Substring(FilePath.LastIndexOf('\\') + 1);
+            }
+        }
+
+        public string TempFileName
+        {
+            get
+            {
+                return TempFilePath.Substring(TempFilePath.LastIndexOf('\\') + 1);
+            }
+        }
 
         public string OriginalName
         {
@@ -52,7 +70,7 @@ namespace Screenshot_Util
         {
             var imgCallback = new Image.GetThumbnailImageAbort(_thumbnailCallback);
             //Image img = Bitmap.FromFile(FileName);
-            using (var img = new Bitmap(this.FileName))
+            using (var img = new Bitmap(this.FilePath))
             {
                 img.GetThumbnailImage(Width, Height, imgCallback, IntPtr.Zero);
                 picThumbnail.Image = new Bitmap(img);
@@ -62,5 +80,7 @@ namespace Screenshot_Util
             _originalName = this.ImageName;
             _originalInfo = this.Info;
         }
+
+
     }
 }

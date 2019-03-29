@@ -19,6 +19,7 @@ namespace Screenshot_Util
         private DrawMode _drawMode = DrawMode.Pen;
         private Color _drawColor = Color.Red;
         private Dictionary<string, ImageCollectionInfo> _listFiles;
+        private bool Unsaved;
 
 
         public frmMain()
@@ -48,6 +49,10 @@ namespace Screenshot_Util
                     DeleteScreenshot();
                     break;
 
+                case "tsbdeletecollection":
+                    DeleteCollection();
+                    break;
+
                 case "tsbbrowse":
                     BrowseForImage();
                     break;
@@ -56,12 +61,52 @@ namespace Screenshot_Util
                     Main.SaveCollection();
                     break;
 
+                case "tsbcopy":
+                    if (picDisplay.Image != null) { Clipboard.SetImage(picDisplay.Image); }
+                    break;
+
+                case "tsbclipboard":
+                    GetImageFromClipboard();
+                    break;
+
+                case "tsbprint":
+                    Main.PrintImages();
+                    break;
+
                 case "tsbundo":
                     UndoChangesToImage();
+                    break;
+
+                case "tsbexit":
+                    Close();
+                    break;
+
+                case "tsbexitcollection":
+                    ExitCollection();
                     break;
             }
         }
 
+
+
+        private async void DeleteCollection()
+        {
+            string deletePath = null;
+            if (Main.CurrentCollection != null)
+                deletePath = Main.CurrentCollection.Path;
+            else if (lstFiles.SelectedIndex >= 0)
+                deletePath = _listFiles[lstFiles.SelectedItem.ToString()].Path;
+
+            if (deletePath != null)
+            {
+                if (MessageBox.Show("Are you sure you want to delete this collection?", null, 
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.OK)
+                {
+                    await Main.DeleteFolderAsync(deletePath);
+                    ExitCollection();
+                }
+            }
+        }
 
 
         private void UndoChangesToImage()
@@ -70,10 +115,10 @@ namespace Screenshot_Util
             if (img != null)
             {
                 DisposeImage();
-                if (img != Main.ActiveThumbnail.FileName)
-                    Main.ActiveThumbnail.TempFile = img;
+                if (img != Main.ActiveThumbnail.FilePath)
+                    Main.ActiveThumbnail.TempFilePath = img;
                 else
-                    Main.ActiveThumbnail.TempFile = null;
+                    Main.ActiveThumbnail.TempFilePath = null;
 
                 using (var bmp = new Bitmap(img))
                     picDisplay.Image = new Bitmap(bmp);
@@ -83,10 +128,29 @@ namespace Screenshot_Util
         }
 
 
+
+        private void ExitCollection()
+        {
+            if(this.Unsaved)
+            {
+                if (MessageBox.Show("Save changes?", null, 
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Main.SaveCollection();
+                }
+            }
+            Main.ExitCollection();
+            ExitControls();
+            // exit
+        }
+
+
+
         private void NewCollection()
         {
-            if (Main.NewCollection())
-                OpenCollection();
+            //if (Main.NewCollection())
+            //    OpenCollection();
+            OpenCollection(Main.NewCollection());
         }
 
 
@@ -100,24 +164,79 @@ namespace Screenshot_Util
         }
 
 
-        
-        private void ExitButtons()
+
+        private void ExitControls()
         {
-            barMenuOpen.Enabled = false;
+            ExitHandlers();
+
             tsbNew.Enabled = true;
             tsbOpen.Enabled = true;
             tsbSaveCollection.Enabled = false;
+
+            tsbScreenshot.Enabled = false;
+            tsbBrowse.Enabled = false;
+            tsbDeleteScreenshot.Enabled = false;
+            tsbDrawMode.Enabled = false;
+            tsbUndo.Enabled = false;
+            tsbExitCollection.Enabled = false;
+
+            flowPanel.Controls.Clear();
+
+            infoPanel.Visible = false;
+
+            txtDescription.Clear();
+            txtName.Clear();
+            lblDateCreated.Text = null;
+            lblDateModified.Text = null;
+
+            lblInfo.Text = null;
+
+            this.Unsaved = false;
+
+            DisposeImage();
+
+            GetFilesList();
+            tabMain.SelectTab(tabBrowse);
+
+        }
+        private void ExitHandlers()
+        {
+            //txtName.TextChanged -= Form_Changed;
+            //txtDescription.TextChanged -= Form_Changed;
+            //flowPanel.ControlAdded -= Form_Changed;
+            //picDisplay.MouseDown -= Form_Changed;
         }
 
 
 
-        private void OpenButtons()
+        private void OpenControls()
         {
-            barMenuOpen.Enabled = true;
             tsbNew.Enabled = false;
             tsbOpen.Enabled = false;
             tsbSaveCollection.Enabled = true;
+
+            tsbScreenshot.Enabled = true;
+            tsbBrowse.Enabled = true;
+            tsbDeleteScreenshot.Enabled = true;
+            tsbDrawMode.Enabled = true;
+            tsbUndo.Enabled = true;
+            tsbExitCollection.Enabled = true;
+
+            infoPanel.Visible = true;
+
+            //foreach (ToolStripItem item in barMenuOpen.Items)
+            //    item.Enabled = true;
+
+            OpenHandlers();
         }
+        private void OpenHandlers()
+        {
+            //txtName.TextChanged += Form_Changed;
+            //txtDescription.TextChanged += Form_Changed;
+            //flowPanel.ControlAdded += Form_Changed;
+            //picDisplay.MouseDown += Form_Changed;
+        }
+
 
 
         private int BrowseForImage()
@@ -140,9 +259,28 @@ namespace Screenshot_Util
         }
 
 
-        public void OpenCollection()
+
+        private void GetImageFromClipboard()
         {
-            Main.OpenCollection(_listFiles[lstFiles.SelectedItem.ToString()].Path);
+            string fileName = Main.GetImageFromClipboard();
+            if (fileName != null)
+            {
+                NewScreenshot(fileName);
+            }
+            else
+            {
+                MessageBox.Show("Clipboard empty");
+            }
+        }
+
+
+
+        public void OpenCollection(string path = null)
+        {
+            if (path == null)
+                path = _listFiles[lstFiles.SelectedItem.ToString()].Path;
+
+            Main.OpenCollection(path);
             foreach (Thumbnail thumb in Main.CurrentCollection.Images)
             {
                 flowPanel.Controls.Add(thumb);
@@ -151,15 +289,8 @@ namespace Screenshot_Util
             tabMain.SelectTab(tabOpen);
             FlowPanel_SelectFirst();
 
-            txtNameCollect.Text = Main.CurrentCollection.Name;
-            txtDescriptionCollect.Text = Main.CurrentCollection.Description;
-            txtNameCollect.TextChanged += CollectionName_Changed;
-            txtDescriptionCollect.TextChanged += CollectionDescription_Changed;
+            OpenControls();
 
-            lblCreatedCollect.Text = Main.CurrentCollection.DateCreated.ToString();
-            lblModifiedCollect.Text = Main.CurrentCollection.DateModified.ToString();
-
-            OpenButtons();
         }
 
 
@@ -171,6 +302,7 @@ namespace Screenshot_Util
             tabMain.SizeMode = TabSizeMode.Fixed;
 
             //FillDataGrid();
+            ExitControls();
             GetFilesList();
         }
 
@@ -179,13 +311,18 @@ namespace Screenshot_Util
 
         private void GetFilesList()
         {
+            lstFiles.SelectedIndexChanged -= lstFiles_SelectedIndexChanged;
+
             _listFiles = new Dictionary<string, ImageCollectionInfo>();
+            lstFiles.Items.Clear();
             foreach(string folder in Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\Snips"))
             {
                 ImageCollectionInfo file = new ImageCollectionInfo(folder);
                 _listFiles.Add(file.Name, file);
                 lstFiles.Items.Add(file.Name);
             }
+
+            lstFiles.SelectedIndexChanged += lstFiles_SelectedIndexChanged;
         }
 
 
@@ -225,7 +362,7 @@ namespace Screenshot_Util
 
             txtName.Text = Main.ActiveThumbnail.ImageName;
             txtDescription.Text = Main.ActiveThumbnail.Info;
-            using (var bmp = new Bitmap(Main.ActiveThumbnail.TempFile != null ? Main.ActiveThumbnail.TempFile : Main.ActiveThumbnail.FileName))
+            using (var bmp = new Bitmap(Main.ActiveThumbnail.TempFilePath != null ? Main.ActiveThumbnail.TempFilePath : Main.ActiveThumbnail.FilePath))
                 picDisplay.Image = new Bitmap(bmp);
 
             lblDateCreated.Text = "Created: " + Main.ActiveThumbnail.DateCreated;
@@ -265,18 +402,6 @@ namespace Screenshot_Util
             Main.ActiveThumbnail.lblDescription.Text = Main.ActiveThumbnail.ImageName;
         }
         
-        private void CollectionDescription_Changed(object sender, EventArgs e)
-        {
-            Main.CurrentCollection.Description = txtDescriptionCollect.Text;
-        }
-
-        private void CollectionName_Changed(object sender, EventArgs e)
-        {
-            Main.CurrentCollection.Name = txtNameCollect.Text;
-        }
-
-        
-
 
 
         private void btnReset_Click(object sender, EventArgs e)
@@ -284,9 +409,9 @@ namespace Screenshot_Util
             Thumbnail a = Main.ActiveThumbnail;
             txtName.Text = a.OriginalName;
             txtDescription.Text = a.OriginalInfo;
-            string folder = a.TempFile.Remove(a.TempFile.LastIndexOf(@"\"));
+            string folder = a.TempFilePath.Remove(a.TempFilePath.LastIndexOf(@"\"));
             Main.DeleteFolderAsync(folder);
-            a.TempFile = null;
+            a.TempFilePath = null;
             Thumbnail_Click(a.picThumbnail, new EventArgs());
         }
 
@@ -394,12 +519,45 @@ namespace Screenshot_Util
         {
             if(lstFiles.SelectedIndex >= 0)
             {
-                string labelText = "{0}\nDescription: {1}\nSize: {2}\n{3} images\n\nCreated on {4}\nLast modified {5}";
+                //string labelText = "{0}\nDescription: {1}\nSize: {2}\n{3} images\n\nCreated on {4}\nLast modified {5}";
 
+                //ImageCollectionInfo info = _listFiles[lstFiles.SelectedItem.ToString()];
+                //lblInfo.Text = string.Format(labelText,
+                //    info.Name, info.Description, info.Size, info.Files, info.DateCreated, info.DateModified);
                 ImageCollectionInfo info = _listFiles[lstFiles.SelectedItem.ToString()];
-                lblInfo.Text = string.Format(labelText,
-                    info.Name, info.Description, info.Size, info.Files, info.DateCreated, info.DateModified);
+                txtCName.Text = info.Name;
+                txtCDescription.Text = info.Description;
+                lblCCreated.Text = "Created: " + info.DateCreated.ToString();
+                lblCModified.Text = "Modified: " + info.DateModified.ToString();
             }
         }
+
+
+
+        private void Form_Changed(object sender, EventArgs e)
+        {
+            Unsaved = true;
+        }
+
+
+
+        private void btnCSave_Click(object sender, EventArgs e)
+        {
+            if (lstFiles.SelectedIndex >= 0)
+            {
+                ImageCollectionInfo info = _listFiles[lstFiles.SelectedItem.ToString()];
+
+                if (txtCName.Text != info.Name)
+                {
+                    info.Rename(txtCName.Text);
+                    lstFiles.SelectedItem = txtCName.Text;
+                }
+
+                if (txtCDescription.Text != info.Description)
+                    info.SetDescription(txtCDescription.Text);
+            }
+        }
+
+
     }
 }

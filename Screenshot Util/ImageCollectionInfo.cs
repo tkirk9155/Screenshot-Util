@@ -36,8 +36,7 @@ namespace Screenshot_Util
             FileInfo[] getFiles = dirInfo.GetFiles("*.png");
             Files = getFiles.Length;
             Size = GetDirectorySize(getFiles);
-            DateCreated = dirInfo.CreationTime;
-            DateModified = dirInfo.LastWriteTime;
+            SetDates(dirInfo);
             Path = folderPath;
         }
 
@@ -57,5 +56,36 @@ namespace Screenshot_Util
 
             return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
+
+
+
+        public async void Rename(string newFolderName)
+        {
+            Path = await Main.RenameFolderAsync(Path, newFolderName);
+            Name = newFolderName;
+            SetDates();
+        }
+
+
+
+        private void SetDates(DirectoryInfo dirInfo = null)
+        {
+            if (dirInfo == null)
+                dirInfo = new DirectoryInfo(Path);
+            DateCreated = dirInfo.CreationTime;
+            DateModified = dirInfo.LastWriteTime;
+        }
+
+
+        public void SetDescription(string description)
+        {
+            Description = description;
+
+            string infoPath = Main.GetPath(Path, "info.txt");
+            string[] fileContents = File.ReadAllLines(infoPath);
+            fileContents[0] = Name + "|" + Description;
+            File.WriteAllLines(infoPath, fileContents);
+        }
+
     }
 }
