@@ -116,7 +116,7 @@ namespace Screenshot_Util
             else
             {
                 FileInfo fInfo = new FileInfo(filePath);
-                CurrentCollection.Images.Add(new Thumbnail()
+                CurrentCollection.Thumbnails.Add(new Thumbnail()
                 {
                     FilePath = CopyFileToDirectory(filePath),
                     DateCreated = fInfo.CreationTime.ToString(),
@@ -131,7 +131,7 @@ namespace Screenshot_Util
 
         public static void PrintImages()
         {
-            Print.PrintImages(new List<Thumbnail> { CurrentCollection.Images[1] });
+            Print.PrintImages(new List<Thumbnail> { CurrentCollection.Thumbnails[1] });
         }
 
 
@@ -154,7 +154,7 @@ namespace Screenshot_Util
 
         public static void ExitCollection()
         {
-            foreach(Thumbnail thumb in CurrentCollection.Images)
+            foreach(Thumbnail thumb in CurrentCollection.Thumbnails)
             {
                 thumb.picThumbnail.Image.Dispose();
                 thumb.picThumbnail.Image = null;

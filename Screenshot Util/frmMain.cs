@@ -159,7 +159,7 @@ namespace Screenshot_Util
         {
             if (Main.NewScreenshot(filePath))
             {
-                flowPanel.Controls.Add(Main.CurrentCollection.Images.Last());
+                flowPanel.Controls.Add(Main.CurrentCollection.Thumbnails.Last());
             }
         }
 
@@ -281,7 +281,7 @@ namespace Screenshot_Util
                 path = _listFiles[lstFiles.SelectedItem.ToString()].Path;
 
             Main.OpenCollection(path);
-            foreach (Thumbnail thumb in Main.CurrentCollection.Images)
+            foreach (Thumbnail thumb in Main.CurrentCollection.Thumbnails)
             {
                 flowPanel.Controls.Add(thumb);
             }
@@ -385,7 +385,7 @@ namespace Screenshot_Util
         private void DeleteScreenshot()
         {
             flowPanel.Controls.Remove(Main.ActiveThumbnail);
-            Main.CurrentCollection.Images.Remove(Main.ActiveThumbnail);
+            Main.CurrentCollection.Thumbnails.Remove(Main.ActiveThumbnail);
             FlowPanel_SelectFirst();
         }
 

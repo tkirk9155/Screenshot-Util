@@ -58,6 +58,12 @@
     <Compile Include="frmNewCollection.Designer.cs">
       <DependentUpon>frmNewCollection.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmPrint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrint.Designer.cs">
+      <DependentUpon>frmPrint.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmScreenshot.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +87,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmNewCollection.resx">
       <DependentUpon>frmNewCollection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrint.resx">
+      <DependentUpon>frmPrint.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmScreenshot.resx">
       <DependentUpon>frmScreenshot.cs</DependentUpon>

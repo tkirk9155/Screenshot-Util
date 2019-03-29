@@ -153,7 +153,7 @@ namespace Screenshot_Util
                     }
                 }
                 DialogResult = DialogResult.OK;
-                Main.CurrentCollection.Images.Add(new Thumbnail()
+                Main.CurrentCollection.Thumbnails.Add(new Thumbnail()
                 {
                     //FileName = fileName.Substring(fileName.LastIndexOf(@"\")),
                     FilePath = fileName,

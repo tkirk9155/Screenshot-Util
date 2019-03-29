@@ -29,7 +29,7 @@ namespace Screenshot_Util
             }
         }
 
-        public List<Thumbnail> Images;
+        public List<Thumbnail> Thumbnails;
         //public Dictionary<String, String> SaveStrings;
         //private ImageCollection _imageCollection;
 
@@ -38,7 +38,7 @@ namespace Screenshot_Util
         public ImageCollection(string folderPath) 
             : base(folderPath)
         {
-            Images = new List<Thumbnail>();
+            Thumbnails = new List<Thumbnail>();
 
             string infoPath = Path + @"\" + "info.txt";
             if (!File.Exists(infoPath))
@@ -53,7 +53,7 @@ namespace Screenshot_Util
                 string[] line = fileContents[i].Split('|');
                 string[] dates = GetFileDates(line[0]);
 
-                Images.Add(new Thumbnail
+                Thumbnails.Add(new Thumbnail
                 {
                     FilePath = Main.GetPath(this.Path, line[0]),
                     ImageName = line[1],
@@ -71,7 +71,7 @@ namespace Screenshot_Util
 
         public void NewScreenshot(string fileName)
         {
-            this.Images.Add(new Thumbnail
+            this.Thumbnails.Add(new Thumbnail
             {
                 DateCreated = DateTime.Now.ToString(),
                 DateModified = DateTime.Now.ToString(),
@@ -109,7 +109,7 @@ namespace Screenshot_Util
             string writeToFile = Name + "|" + Description + Environment.NewLine;
             string formatString = "{0}|{1}|{2}" + Environment.NewLine;
 
-            foreach (Thumbnail thumb in Images)
+            foreach (Thumbnail thumb in Thumbnails)
             {
                 if(thumb.TempFilePath != null)
                 {
@@ -124,7 +124,7 @@ namespace Screenshot_Util
             foreach (string folder in Directory.GetDirectories(Path))
                 await Main.DeleteFolderAsync(folder);
 
-            string[] saveImages = Images.Select(x => x.FilePath).ToArray();
+            string[] saveImages = Thumbnails.Select(x => x.FilePath).ToArray();
             foreach (string file in Directory.GetFiles(Path, "*.png"))
             {
                 if (!saveImages.Contains(file))
