@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO;
+using System.Drawing;
 
 namespace Screenshot_Util
 {
@@ -30,8 +31,6 @@ namespace Screenshot_Util
         }
 
         public List<Thumbnail> Thumbnails;
-        //public Dictionary<String, String> SaveStrings;
-        //private ImageCollection _imageCollection;
 
 
 
@@ -47,7 +46,7 @@ namespace Screenshot_Util
                 System.Threading.Thread.Sleep(500);
             }
 
-            string[] fileContents = File.ReadAllLines(infoPath);
+            string[] fileContents = File.ReadAllLines(infoPath).Where(f => f.Trim().Length > 0).ToArray();
             for (int i = 1; i < fileContents.Length; i++)
             {
                 string[] line = fileContents[i].Split('|');
@@ -95,26 +94,16 @@ namespace Screenshot_Util
 
         public async void Save()
         {
-            //if (Name != OriginalName)
-            //{
-            //    await Main.RenameFolderAsync(Path, Name);
-            //    foreach(Thumbnail thumb in Images)
-            //    {
-            //        if (thumb.TempFilePath != null)
-            //            thumb.TempFile = thumb.TempFile.Replace(OriginalName, Name);
-            //    }
-            //    Path = Path.Replace(OriginalName, Name);
-            //}
 
             string writeToFile = Name + "|" + Description + Environment.NewLine;
             string formatString = "{0}|{1}|{2}" + Environment.NewLine;
 
             foreach (Thumbnail thumb in Thumbnails)
             {
-                if(thumb.TempFilePath != null)
+                if(thumb.TempFileName != null)
                 {
-                    await Main.DeleteFileAsync(thumb.FileName);
-                    File.Move(thumb.TempFilePath, thumb.FilePath);
+                    await Main.DeleteFileAsync(thumb.FilePath);
+                    File.Move(Main.GetPath(thumb.TempFilePath, thumb.TempFileName), thumb.FilePath);
                 }
                 writeToFile += string.Format(formatString, thumb.FileName, thumb.ImageName, thumb.Info);
             }
@@ -131,5 +120,18 @@ namespace Screenshot_Util
                     await Main.DeleteFileAsync(file);
             }
         }
+
+
+
+        public void Exit()
+        {
+            foreach (Thumbnail thumb in Thumbnails)
+            {
+                thumb.picThumbnail.Image.Dispose();
+                thumb.picThumbnail.Image = null;
+            }
+        }
+
+
     }
 }

@@ -20,9 +20,23 @@ namespace Screenshot_Util
         private void btnContinue_Click(object sender, EventArgs e)
         {
             List<Thumbnail> printImages = new List<Thumbnail>();
-            foreach(var item in lstPrint.Items)
+            for (int i = 0; i < lstPrint.Items.Count; i++)
             {
-                printImages.Add(Main.CurrentCollection.Thumbnails.FirstOrDefault(t => t.ImageName == item.ToString()));
+                if(lstPrint.GetItemChecked(i))
+                {
+                    printImages.Add(Main.CurrentCollection.Thumbnails.FirstOrDefault(t =>
+                    {
+                        bool result = false;
+                        if (t.ImageName == lstPrint.Items[i].ToString()
+                            || t.FileName == lstPrint.Items[i].ToString())
+                        {
+                            result = true;
+                        }
+
+                        return result;
+                    }));
+                }
+
             }
             Print.PrintImages(printImages);
         }
@@ -39,10 +53,11 @@ namespace Screenshot_Util
             {
                 if (thumb.ImageName.Length <= 0)
                 {
-                    lstPrint.Items.Add("unnamed" + 1.ToString());
+                    lstPrint.Items.Add(thumb.FileName);
                     i++;
                 }
                 else { lstPrint.Items.Add(thumb.ImageName); }
+                lstPrint.SetItemChecked(lstPrint.Items.Count - 1, true);
             }
         }
     }

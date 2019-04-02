@@ -111,19 +111,14 @@ namespace Screenshot_Util
 
         private void UndoChangesToImage()
         {
-            string img = Main.RestorePreviousImage();
-            if (img != null)
+            Thumbnail thumb = Main.ActiveThumbnail;
+
+            thumb.RestorePreviousImage();
+
+            DisposeImage();
+            using (var bmp = new Bitmap(thumb.TempFileName != null ? Main.GetPath(thumb.TempFilePath, thumb.TempFileName) : thumb.FilePath))
             {
-                DisposeImage();
-                if (img != Main.ActiveThumbnail.FilePath)
-                    Main.ActiveThumbnail.TempFilePath = img;
-                else
-                    Main.ActiveThumbnail.TempFilePath = null;
-
-                using (var bmp = new Bitmap(img))
-                    picDisplay.Image = new Bitmap(bmp);
-
-                picDisplay.Invalidate();
+                picDisplay.Image = new Bitmap(bmp);
             }
         }
 
@@ -131,13 +126,11 @@ namespace Screenshot_Util
 
         private void ExitCollection()
         {
-            if(this.Unsaved)
+            //if(this.Unsaved)
+            if (MessageBox.Show("Save any changes?", "", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (MessageBox.Show("Save changes?", null, 
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    Main.SaveCollection();
-                }
+                Main.SaveCollection();
             }
             Main.ExitCollection();
             ExitControls();
@@ -157,10 +150,14 @@ namespace Screenshot_Util
 
         private void NewScreenshot(string filePath = null)
         {
+            Visible = false;
+
             if (Main.NewScreenshot(filePath))
             {
                 flowPanel.Controls.Add(Main.CurrentCollection.Thumbnails.Last());
             }
+
+            Visible = true;
         }
 
 
@@ -352,21 +349,25 @@ namespace Screenshot_Util
         {
             DisposeImage();
 
+            Thumbnail thumb = Main.ActiveThumbnail;
+
             txtDescription.TextChanged -= ImageDescription_Changed;
             txtName.TextChanged -= ImageName_Changed;
-            if (Main.ActiveThumbnail != null)
-                Main.ActiveThumbnail.BorderStyle = BorderStyle.FixedSingle;
+            if (thumb != null)
+                thumb.BorderStyle = BorderStyle.FixedSingle;
 
             Main.ActiveThumbnail = (Thumbnail)((Control)sender).Parent;
-            Main.ActiveThumbnail.BorderStyle = BorderStyle.Fixed3D;
+            thumb = Main.ActiveThumbnail;
+            //thumb = (Thumbnail)((Control)sender).Parent;
+            thumb.BorderStyle = BorderStyle.Fixed3D;
 
-            txtName.Text = Main.ActiveThumbnail.ImageName;
-            txtDescription.Text = Main.ActiveThumbnail.Info;
-            using (var bmp = new Bitmap(Main.ActiveThumbnail.TempFilePath != null ? Main.ActiveThumbnail.TempFilePath : Main.ActiveThumbnail.FilePath))
+            txtName.Text = thumb.ImageName;
+            txtDescription.Text = thumb.Info;
+            using (var bmp = new Bitmap(thumb.TempFileName != null ? Main.GetPath(thumb.TempFilePath, thumb.TempFileName) : thumb.FilePath))     // need to clear TempFilePath
                 picDisplay.Image = new Bitmap(bmp);
 
-            lblDateCreated.Text = "Created: " + Main.ActiveThumbnail.DateCreated;
-            lblDateModified.Text = "Modified: " + Main.ActiveThumbnail.DateModified;
+            lblDateCreated.Text = "Created: " + thumb.DateCreated;
+            lblDateModified.Text = "Modified: " + thumb.DateModified;
 
             txtDescription.TextChanged += ImageDescription_Changed;
             txtName.TextChanged += ImageName_Changed;
@@ -457,7 +458,7 @@ namespace Screenshot_Util
                 _prevPoint = null;
                 _drawPen.Dispose();
                 _drawPen = null;
-                Main.SaveTempImage(picDisplay.Image);
+                Main.ActiveThumbnail.SaveTempImage(picDisplay.Image);
             }
         }
 
@@ -519,11 +520,6 @@ namespace Screenshot_Util
         {
             if(lstFiles.SelectedIndex >= 0)
             {
-                //string labelText = "{0}\nDescription: {1}\nSize: {2}\n{3} images\n\nCreated on {4}\nLast modified {5}";
-
-                //ImageCollectionInfo info = _listFiles[lstFiles.SelectedItem.ToString()];
-                //lblInfo.Text = string.Format(labelText,
-                //    info.Name, info.Description, info.Size, info.Files, info.DateCreated, info.DateModified);
                 ImageCollectionInfo info = _listFiles[lstFiles.SelectedItem.ToString()];
                 txtCName.Text = info.Name;
                 txtCDescription.Text = info.Description;
