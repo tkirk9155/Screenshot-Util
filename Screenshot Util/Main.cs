@@ -101,8 +101,8 @@ namespace Screenshot_Util
                 CurrentCollection.Thumbnails.Add(new Thumbnail()
                 {   // if file is in another folder ? copy it : already exists in folder aka screenshot
                     FilePath = GetFolder(filePath) != GetFolder(CurrentCollection.Path) ? CopyFileToDirectory(filePath) : filePath,
-                    DateCreated = fInfo.CreationTime.ToString(),
-                    DateModified = DateTime.Now.ToString(),
+                    //DateCreated = fInfo.CreationTime.ToString(),
+                    //DateModified = DateTime.Now.ToString(),
                 });
                 result = true;
             }
@@ -221,6 +221,7 @@ namespace Screenshot_Util
         {
             newFolderName = oldPath.Remove(oldPath.LastIndexOf(@"\") + 1) + newFolderName;
 
+            bool flag = false;
             int i;
             for (i = 0; i < 20; i++)
             {
@@ -229,13 +230,17 @@ namespace Screenshot_Util
                     Directory.Move(oldPath, newFolderName);
                     await Task.Delay(500);
                     if (Directory.Exists(newFolderName) && !Directory.Exists(oldPath))
+                    {
+                        flag = true;
                         break;
+                    }
                 }
                 catch (Exception ex)
                 {
                     await Task.Delay(500);
                 }
             }
+            if (!flag) { newFolderName = null; }
             return newFolderName;
         }
 

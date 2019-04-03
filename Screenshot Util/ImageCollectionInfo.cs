@@ -59,11 +59,14 @@ namespace Screenshot_Util
 
 
 
-        public async void Rename(string newFolderName)
+        public async Task<bool> Rename(string newFolderName)
         {
-            Path = await Main.RenameFolderAsync(Path, newFolderName);
+            string newPath = await Main.RenameFolderAsync(Path, newFolderName);
+            if (newPath == null) { return false; }
+            Path = newPath;
             Name = newFolderName;
             SetDates();
+            return true;
         }
 
 

@@ -29,6 +29,23 @@ namespace Screenshot_Util
 
 
 
+        private void frmMain_Load(object sender, EventArgs e)
+        {
+            tabMain.Appearance = TabAppearance.FlatButtons;
+            tabMain.ItemSize = new Size(0, 1);
+            tabMain.SizeMode = TabSizeMode.Fixed;
+
+            tabSidePanel.Appearance = TabAppearance.FlatButtons;
+            tabSidePanel.ItemSize = new Size(0, 1);
+            tabSidePanel.SizeMode = TabSizeMode.Fixed;
+
+            //FillDataGrid();
+            ExitControls();
+            GetFilesList();
+        }
+
+
+
         private void barMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             switch (e.ClickedItem.Name.ToLower())
@@ -78,7 +95,7 @@ namespace Screenshot_Util
                     break;
 
                 case "tsbexit":
-                    Close();
+                    ExitProgram();
                     break;
 
                 case "tsbexitcollection":
@@ -100,10 +117,10 @@ namespace Screenshot_Util
             if (deletePath != null)
             {
                 if (MessageBox.Show("Are you sure you want to delete this collection?", null, 
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.OK)
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     await Main.DeleteFolderAsync(deletePath);
-                    ExitCollection();
+                    ExitCollection(checkSave:false);
                 }
             }
         }
@@ -124,16 +141,29 @@ namespace Screenshot_Util
 
 
 
-        private void ExitCollection()
+        private void ExitProgram()
+        {
+            if (Main.CurrentCollection != null) { ExitCollection(); }
+            this.Close();
+        }
+
+
+
+        private void ExitCollection(bool checkSave = true)
         {
             //if(this.Unsaved)
-            if (MessageBox.Show("Save any changes?", "", 
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if (Main.CurrentCollection != null)
             {
-                Main.SaveCollection();
+                if (checkSave && MessageBox.Show("Save any changes?", "",
+                                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Main.SaveCollection();
+                }
+                Main.ExitCollection();
             }
-            Main.ExitCollection();
+            
             ExitControls();
+            GetFilesList();
             // exit
         }
 
@@ -164,8 +194,6 @@ namespace Screenshot_Util
 
         private void ExitControls()
         {
-            ExitHandlers();
-
             tsbNew.Enabled = true;
             tsbOpen.Enabled = true;
             tsbSaveCollection.Enabled = false;
@@ -176,15 +204,19 @@ namespace Screenshot_Util
             tsbDrawMode.Enabled = false;
             tsbUndo.Enabled = false;
             tsbExitCollection.Enabled = false;
+            tsbClipboard.Enabled = false;
+            tsbCopy.Enabled = false;
+            tsbPrint.Enabled = false;
 
             flowPanel.Controls.Clear();
 
-            infoPanel.Visible = false;
+            this.Size = new Size(710, 719);
+            tabSidePanel.SelectTab(tabSideBrowse);
 
-            txtDescription.Clear();
-            txtName.Clear();
-            lblDateCreated.Text = null;
-            lblDateModified.Text = null;
+            txtCDescription.Clear();
+            txtCName.Clear();
+            lblCCreated.Text = null;
+            lblCModified.Text = null;
 
             lblInfo.Text = null;
 
@@ -195,13 +227,6 @@ namespace Screenshot_Util
             GetFilesList();
             tabMain.SelectTab(tabBrowse);
 
-        }
-        private void ExitHandlers()
-        {
-            //txtName.TextChanged -= Form_Changed;
-            //txtDescription.TextChanged -= Form_Changed;
-            //flowPanel.ControlAdded -= Form_Changed;
-            //picDisplay.MouseDown -= Form_Changed;
         }
 
 
@@ -218,20 +243,13 @@ namespace Screenshot_Util
             tsbDrawMode.Enabled = true;
             tsbUndo.Enabled = true;
             tsbExitCollection.Enabled = true;
+            tsbClipboard.Enabled = true;
+            tsbCopy.Enabled = true;
+            tsbPrint.Enabled = true;
 
-            infoPanel.Visible = true;
+            this.Size = new Size(1084, 719);
+            tabSidePanel.SelectTab(tabSideOpen);
 
-            //foreach (ToolStripItem item in barMenuOpen.Items)
-            //    item.Enabled = true;
-
-            OpenHandlers();
-        }
-        private void OpenHandlers()
-        {
-            //txtName.TextChanged += Form_Changed;
-            //txtDescription.TextChanged += Form_Changed;
-            //flowPanel.ControlAdded += Form_Changed;
-            //picDisplay.MouseDown += Form_Changed;
         }
 
 
@@ -274,6 +292,8 @@ namespace Screenshot_Util
 
         public void OpenCollection(string path = null)
         {
+            if (lstFiles.SelectedIndex < 0) { return; }
+
             if (path == null)
                 path = _listFiles[lstFiles.SelectedItem.ToString()].Path;
 
@@ -289,20 +309,6 @@ namespace Screenshot_Util
             OpenControls();
 
         }
-
-
-
-        private void frmMain_Load(object sender, EventArgs e)
-        {
-            tabMain.Appearance = TabAppearance.FlatButtons;
-            tabMain.ItemSize = new Size(0, 1);
-            tabMain.SizeMode = TabSizeMode.Fixed;
-
-            //FillDataGrid();
-            ExitControls();
-            GetFilesList();
-        }
-
 
 
 
@@ -371,6 +377,8 @@ namespace Screenshot_Util
 
             txtDescription.TextChanged += ImageDescription_Changed;
             txtName.TextChanged += ImageName_Changed;
+
+            picDisplay.Size = new Size(picDisplay.Image.Width, picDisplay.Image.Height);
         }
 
 
@@ -537,7 +545,7 @@ namespace Screenshot_Util
 
 
 
-        private void btnCSave_Click(object sender, EventArgs e)
+        private async void btnCSave_Click(object sender, EventArgs e)
         {
             if (lstFiles.SelectedIndex >= 0)
             {
@@ -545,7 +553,14 @@ namespace Screenshot_Util
 
                 if (txtCName.Text != info.Name)
                 {
-                    info.Rename(txtCName.Text);
+                    bool result = await info.Rename(txtCName.Text);
+                    if (!result)
+                    {
+                        MessageBox.Show("Couldn't rename; do you have the folder open?");
+                        return;
+                    }
+
+                    GetFilesList();
                     lstFiles.SelectedItem = txtCName.Text;
                 }
 

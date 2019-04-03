@@ -85,6 +85,16 @@ namespace Screenshot_Util
             _originalInfo = this.Info;
             TempFilePath = FilePath.Insert(FilePath.LastIndexOf(@"\") + 1, "temp"); ;
             TempFilePath = TempFilePath.Remove(TempFilePath.LastIndexOf("."));
+
+            FileInfo fInfo = new FileInfo(this.FilePath);
+            if (fInfo.LastWriteTime < fInfo.CreationTime)
+            {
+                File.SetLastWriteTime(FilePath, fInfo.CreationTime);
+                fInfo.Refresh();
+            }
+
+            DateCreated = fInfo.CreationTime.ToString();
+            DateModified = fInfo.LastWriteTime.ToString();
         }
 
 

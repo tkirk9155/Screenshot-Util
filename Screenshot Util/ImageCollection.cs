@@ -50,15 +50,15 @@ namespace Screenshot_Util
             for (int i = 1; i < fileContents.Length; i++)
             {
                 string[] line = fileContents[i].Split('|');
-                string[] dates = GetFileDates(line[0]);
+                //string[] dates = GetFileDates(line[0]);
 
                 Thumbnails.Add(new Thumbnail
                 {
                     FilePath = Main.GetPath(this.Path, line[0]),
                     ImageName = line[1],
                     Info = line[2],
-                    DateCreated = dates[0],
-                    DateModified = dates[1],
+                    //DateCreated = dates[0],
+                    //DateModified = dates[1],
                 });
             }
 
@@ -80,15 +80,15 @@ namespace Screenshot_Util
 
 
 
-        public static string[] GetFileDates(string fileName)
-        {
-            string[] dates = new string[2];
-            FileInfo fInfo = new FileInfo(fileName);
-            dates[0] = fInfo.CreationTime.ToString();
-            dates[1] = fInfo.LastWriteTime.ToString();
+        //public static string[] GetFileDates(string fileName)
+        //{
+        //    string[] dates = new string[2];
+        //    FileInfo fInfo = new FileInfo(fileName);
+        //    dates[0] = fInfo.CreationTime.ToString();
+        //    dates[1] = fInfo.LastWriteTime.ToString();
 
-            return dates;
-        }
+        //    return dates;
+        //}
 
 
 
@@ -102,9 +102,18 @@ namespace Screenshot_Util
             {
                 if(thumb.TempFileName != null)
                 {
+                    // set temp file (now the new image)'s creation date to the original image's
+                    DateTime creationDate = new FileInfo(thumb.FilePath).CreationTime;
                     await Main.DeleteFileAsync(thumb.FilePath);
                     File.Move(Main.GetPath(thumb.TempFilePath, thumb.TempFileName), thumb.FilePath);
+                    File.SetCreationTime(thumb.FilePath, creationDate);
                 }
+
+                if(thumb.OriginalInfo != thumb.Info || thumb.ImageName != thumb.OriginalName)
+                {
+                    File.SetLastWriteTime(thumb.FilePath, DateTime.Now);
+                }
+
                 writeToFile += string.Format(formatString, thumb.FileName, thumb.ImageName, thumb.Info);
             }
 
@@ -127,6 +136,9 @@ namespace Screenshot_Util
         {
             foreach (Thumbnail thumb in Thumbnails)
             {
+                if (Directory.Exists(thumb.TempFilePath))
+                    Directory.Delete(thumb.TempFilePath, true);
+
                 thumb.picThumbnail.Image.Dispose();
                 thumb.picThumbnail.Image = null;
             }

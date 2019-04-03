@@ -41,34 +41,6 @@
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabBrowse = new System.Windows.Forms.TabPage();
-            this.lblInfo = new System.Windows.Forms.Label();
-            this.lstFiles = new System.Windows.Forms.ListBox();
-            this.tabOpen = new System.Windows.Forms.TabPage();
-            this.picDisplay = new System.Windows.Forms.PictureBox();
-            this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.txtDescription = new System.Windows.Forms.RichTextBox();
-            this.lblDateCreated = new System.Windows.Forms.Label();
-            this.lblDateModified = new System.Windows.Forms.Label();
-            this.btnReset = new System.Windows.Forms.Button();
-            this.lblName = new System.Windows.Forms.Label();
-            this.lblDescription = new System.Windows.Forms.Label();
-            this.infoPanel = new System.Windows.Forms.GroupBox();
-            this.sidePanel = new System.Windows.Forms.Panel();
-            this.tsbScreenshot = new System.Windows.Forms.ToolStripButton();
-            this.tsbDeleteScreenshot = new System.Windows.Forms.ToolStripButton();
-            this.barMenuOpen = new System.Windows.Forms.ToolStrip();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbBrowse = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbUndo = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbExitCollection = new System.Windows.Forms.ToolStripButton();
-            this.tsbDrawMode = new System.Windows.Forms.ToolStripDropDownButton();
-            this.tsbPen = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbHighlight = new System.Windows.Forms.ToolStripMenuItem();
             this.lblCName = new System.Windows.Forms.Label();
             this.btnCSave = new System.Windows.Forms.Button();
             this.txtCName = new System.Windows.Forms.TextBox();
@@ -76,20 +48,50 @@
             this.lblCModified = new System.Windows.Forms.Label();
             this.lblCCreated = new System.Windows.Forms.Label();
             this.lblCDescription = new System.Windows.Forms.Label();
-            this.tsbPrint = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbCopy = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.lblInfo = new System.Windows.Forms.Label();
+            this.lstFiles = new System.Windows.Forms.ListBox();
+            this.tabOpen = new System.Windows.Forms.TabPage();
+            this.picDisplay = new System.Windows.Forms.PictureBox();
+            this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.tsbScreenshot = new System.Windows.Forms.ToolStripButton();
+            this.tsbDeleteScreenshot = new System.Windows.Forms.ToolStripButton();
+            this.barMenuOpen = new System.Windows.Forms.ToolStrip();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbBrowse = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbClipboard = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbDrawMode = new System.Windows.Forms.ToolStripDropDownButton();
+            this.tsbPen = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbHighlight = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbUndo = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbCopy = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbPrint = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbExitCollection = new System.Windows.Forms.ToolStripButton();
+            this.tabSidePanel = new System.Windows.Forms.TabControl();
+            this.tabSideBrowse = new System.Windows.Forms.TabPage();
+            this.tabSideOpen = new System.Windows.Forms.TabPage();
+            this.lblName = new System.Windows.Forms.Label();
+            this.btnReset = new System.Windows.Forms.Button();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.txtDescription = new System.Windows.Forms.RichTextBox();
+            this.lblDateModified = new System.Windows.Forms.Label();
+            this.lblDateCreated = new System.Windows.Forms.Label();
+            this.lblDescription = new System.Windows.Forms.Label();
             this.barMenu.SuspendLayout();
             this.tabMain.SuspendLayout();
             this.tabBrowse.SuspendLayout();
             this.tabOpen.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).BeginInit();
-            this.infoPanel.SuspendLayout();
-            this.sidePanel.SuspendLayout();
             this.barMenuOpen.SuspendLayout();
+            this.tabSidePanel.SuspendLayout();
+            this.tabSideBrowse.SuspendLayout();
+            this.tabSideOpen.SuspendLayout();
             this.SuspendLayout();
             // 
             // barMenu
@@ -178,7 +180,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabMain.Controls.Add(this.tabBrowse);
             this.tabMain.Controls.Add(this.tabOpen);
-            this.tabMain.Location = new System.Drawing.Point(0, 50);
+            this.tabMain.Location = new System.Drawing.Point(251, 50);
             this.tabMain.Margin = new System.Windows.Forms.Padding(0);
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
@@ -187,13 +189,6 @@
             // 
             // tabBrowse
             // 
-            this.tabBrowse.Controls.Add(this.lblCName);
-            this.tabBrowse.Controls.Add(this.btnCSave);
-            this.tabBrowse.Controls.Add(this.txtCName);
-            this.tabBrowse.Controls.Add(this.txtCDescription);
-            this.tabBrowse.Controls.Add(this.lblCModified);
-            this.tabBrowse.Controls.Add(this.lblCCreated);
-            this.tabBrowse.Controls.Add(this.lblCDescription);
             this.tabBrowse.Controls.Add(this.lblInfo);
             this.tabBrowse.Controls.Add(this.lstFiles);
             this.tabBrowse.Location = new System.Drawing.Point(4, 22);
@@ -204,12 +199,78 @@
             this.tabBrowse.Text = "tabPage1";
             this.tabBrowse.UseVisualStyleBackColor = true;
             // 
+            // lblCName
+            // 
+            this.lblCName.AutoSize = true;
+            this.lblCName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCName.Location = new System.Drawing.Point(0, 0);
+            this.lblCName.Name = "lblCName";
+            this.lblCName.Size = new System.Drawing.Size(41, 15);
+            this.lblCName.TabIndex = 8;
+            this.lblCName.Text = "Name";
+            // 
+            // btnCSave
+            // 
+            this.btnCSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCSave.Location = new System.Drawing.Point(4, 268);
+            this.btnCSave.Name = "btnCSave";
+            this.btnCSave.Size = new System.Drawing.Size(75, 30);
+            this.btnCSave.TabIndex = 12;
+            this.btnCSave.Text = "Save";
+            this.btnCSave.UseVisualStyleBackColor = true;
+            this.btnCSave.Click += new System.EventHandler(this.btnCSave_Click);
+            // 
+            // txtCName
+            // 
+            this.txtCName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCName.Location = new System.Drawing.Point(0, 18);
+            this.txtCName.Name = "txtCName";
+            this.txtCName.Size = new System.Drawing.Size(244, 21);
+            this.txtCName.TabIndex = 6;
+            // 
+            // txtCDescription
+            // 
+            this.txtCDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCDescription.Location = new System.Drawing.Point(0, 86);
+            this.txtCDescription.Name = "txtCDescription";
+            this.txtCDescription.Size = new System.Drawing.Size(244, 92);
+            this.txtCDescription.TabIndex = 7;
+            this.txtCDescription.Text = "";
+            // 
+            // lblCModified
+            // 
+            this.lblCModified.AutoSize = true;
+            this.lblCModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCModified.Location = new System.Drawing.Point(0, 218);
+            this.lblCModified.Name = "lblCModified";
+            this.lblCModified.Size = new System.Drawing.Size(0, 15);
+            this.lblCModified.TabIndex = 9;
+            // 
+            // lblCCreated
+            // 
+            this.lblCCreated.AutoSize = true;
+            this.lblCCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCCreated.Location = new System.Drawing.Point(0, 190);
+            this.lblCCreated.Name = "lblCCreated";
+            this.lblCCreated.Size = new System.Drawing.Size(0, 15);
+            this.lblCCreated.TabIndex = 10;
+            // 
+            // lblCDescription
+            // 
+            this.lblCDescription.AutoSize = true;
+            this.lblCDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCDescription.Location = new System.Drawing.Point(0, 62);
+            this.lblCDescription.Name = "lblCDescription";
+            this.lblCDescription.Size = new System.Drawing.Size(69, 15);
+            this.lblCDescription.TabIndex = 11;
+            this.lblCDescription.Text = "Description";
+            // 
             // lblInfo
             // 
             this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInfo.Location = new System.Drawing.Point(433, 480);
+            this.lblInfo.Location = new System.Drawing.Point(719, 521);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(367, 80);
+            this.lblInfo.Size = new System.Drawing.Size(81, 80);
             this.lblInfo.TabIndex = 2;
             this.lblInfo.Text = "label1";
             // 
@@ -227,6 +288,7 @@
             // 
             // tabOpen
             // 
+            this.tabOpen.AutoScroll = true;
             this.tabOpen.Controls.Add(this.picDisplay);
             this.tabOpen.Controls.Add(this.flowPanel);
             this.tabOpen.Location = new System.Drawing.Point(4, 22);
@@ -241,7 +303,6 @@
             // 
             this.picDisplay.BackColor = System.Drawing.Color.White;
             this.picDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picDisplay.Location = new System.Drawing.Point(3, 145);
             this.picDisplay.Name = "picDisplay";
             this.picDisplay.Size = new System.Drawing.Size(800, 456);
@@ -262,103 +323,6 @@
             this.flowPanel.Size = new System.Drawing.Size(800, 142);
             this.flowPanel.TabIndex = 0;
             this.flowPanel.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.flowPanel_ControlAdded);
-            // 
-            // txtName
-            // 
-            this.txtName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtName.Location = new System.Drawing.Point(3, 42);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(245, 21);
-            this.txtName.TabIndex = 2;
-            // 
-            // txtDescription
-            // 
-            this.txtDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDescription.Location = new System.Drawing.Point(4, 104);
-            this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(244, 92);
-            this.txtDescription.TabIndex = 3;
-            this.txtDescription.Text = "";
-            // 
-            // lblDateCreated
-            // 
-            this.lblDateCreated.AutoSize = true;
-            this.lblDateCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateCreated.Location = new System.Drawing.Point(2, 211);
-            this.lblDateCreated.Name = "lblDateCreated";
-            this.lblDateCreated.Size = new System.Drawing.Size(75, 15);
-            this.lblDateCreated.TabIndex = 4;
-            this.lblDateCreated.Text = "date created";
-            // 
-            // lblDateModified
-            // 
-            this.lblDateModified.AutoSize = true;
-            this.lblDateModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDateModified.Location = new System.Drawing.Point(2, 239);
-            this.lblDateModified.Name = "lblDateModified";
-            this.lblDateModified.Size = new System.Drawing.Size(82, 15);
-            this.lblDateModified.TabIndex = 4;
-            this.lblDateModified.Text = "date modified";
-            // 
-            // btnReset
-            // 
-            this.btnReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReset.Location = new System.Drawing.Point(3, 286);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(75, 30);
-            this.btnReset.TabIndex = 5;
-            this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
-            // 
-            // lblName
-            // 
-            this.lblName.AutoSize = true;
-            this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(2, 21);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(41, 15);
-            this.lblName.TabIndex = 4;
-            this.lblName.Text = "Name";
-            // 
-            // lblDescription
-            // 
-            this.lblDescription.AutoSize = true;
-            this.lblDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDescription.Location = new System.Drawing.Point(2, 83);
-            this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(69, 15);
-            this.lblDescription.TabIndex = 4;
-            this.lblDescription.Text = "Description";
-            // 
-            // infoPanel
-            // 
-            this.infoPanel.Controls.Add(this.lblName);
-            this.infoPanel.Controls.Add(this.btnReset);
-            this.infoPanel.Controls.Add(this.txtName);
-            this.infoPanel.Controls.Add(this.txtDescription);
-            this.infoPanel.Controls.Add(this.lblDateModified);
-            this.infoPanel.Controls.Add(this.lblDateCreated);
-            this.infoPanel.Controls.Add(this.lblDescription);
-            this.infoPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.infoPanel.Location = new System.Drawing.Point(0, 0);
-            this.infoPanel.Name = "infoPanel";
-            this.infoPanel.Padding = new System.Windows.Forms.Padding(0);
-            this.infoPanel.Size = new System.Drawing.Size(254, 319);
-            this.infoPanel.TabIndex = 6;
-            this.infoPanel.TabStop = false;
-            this.infoPanel.Text = "Current Image";
-            // 
-            // sidePanel
-            // 
-            this.sidePanel.AutoScroll = true;
-            this.sidePanel.Controls.Add(this.infoPanel);
-            this.sidePanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.sidePanel.Location = new System.Drawing.Point(814, 25);
-            this.sidePanel.Margin = new System.Windows.Forms.Padding(0);
-            this.sidePanel.Name = "sidePanel";
-            this.sidePanel.Size = new System.Drawing.Size(254, 655);
-            this.sidePanel.TabIndex = 7;
             // 
             // tsbScreenshot
             // 
@@ -398,7 +362,7 @@
             this.tsbExitCollection});
             this.barMenuOpen.Location = new System.Drawing.Point(0, 25);
             this.barMenuOpen.Name = "barMenuOpen";
-            this.barMenuOpen.Size = new System.Drawing.Size(814, 25);
+            this.barMenuOpen.Size = new System.Drawing.Size(1068, 25);
             this.barMenuOpen.TabIndex = 8;
             this.barMenuOpen.Text = "toolStrip1";
             this.barMenuOpen.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.barMenu_ItemClicked);
@@ -421,10 +385,47 @@
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
             // 
+            // tsbClipboard
+            // 
+            this.tsbClipboard.Image = ((System.Drawing.Image)(resources.GetObject("tsbClipboard.Image")));
+            this.tsbClipboard.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbClipboard.Name = "tsbClipboard";
+            this.tsbClipboard.Size = new System.Drawing.Size(77, 22);
+            this.tsbClipboard.Text = "clipboard";
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
+            // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbDrawMode
+            // 
+            this.tsbDrawMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsbPen,
+            this.tsbHighlight});
+            this.tsbDrawMode.Image = ((System.Drawing.Image)(resources.GetObject("tsbDrawMode.Image")));
+            this.tsbDrawMode.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDrawMode.Name = "tsbDrawMode";
+            this.tsbDrawMode.Size = new System.Drawing.Size(96, 22);
+            this.tsbDrawMode.Text = "draw mode";
+            this.tsbDrawMode.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tsbDrawMode_DropDownItemClicked);
+            // 
+            // tsbPen
+            // 
+            this.tsbPen.Name = "tsbPen";
+            this.tsbPen.Size = new System.Drawing.Size(124, 22);
+            this.tsbPen.Text = "Pen";
+            // 
+            // tsbHighlight
+            // 
+            this.tsbHighlight.Name = "tsbHighlight";
+            this.tsbHighlight.Size = new System.Drawing.Size(124, 22);
+            this.tsbHighlight.Text = "Highlight";
             // 
             // toolStripSeparator7
             // 
@@ -444,103 +445,18 @@
             this.toolStripSeparator8.Name = "toolStripSeparator8";
             this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbExitCollection
+            // tsbCopy
             // 
-            this.tsbExitCollection.Image = ((System.Drawing.Image)(resources.GetObject("tsbExitCollection.Image")));
-            this.tsbExitCollection.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbExitCollection.Name = "tsbExitCollection";
-            this.tsbExitCollection.Size = new System.Drawing.Size(45, 22);
-            this.tsbExitCollection.Text = "exit";
+            this.tsbCopy.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopy.Image")));
+            this.tsbCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCopy.Name = "tsbCopy";
+            this.tsbCopy.Size = new System.Drawing.Size(53, 22);
+            this.tsbCopy.Text = "copy";
             // 
-            // tsbDrawMode
+            // toolStripSeparator11
             // 
-            this.tsbDrawMode.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsbPen,
-            this.tsbHighlight});
-            this.tsbDrawMode.Image = ((System.Drawing.Image)(resources.GetObject("tsbDrawMode.Image")));
-            this.tsbDrawMode.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDrawMode.Name = "tsbDrawMode";
-            this.tsbDrawMode.Size = new System.Drawing.Size(96, 22);
-            this.tsbDrawMode.Text = "draw mode";
-            this.tsbDrawMode.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.tsbDrawMode_DropDownItemClicked);
-            // 
-            // tsbPen
-            // 
-            this.tsbPen.Name = "tsbPen";
-            this.tsbPen.Size = new System.Drawing.Size(180, 22);
-            this.tsbPen.Text = "Pen";
-            // 
-            // tsbHighlight
-            // 
-            this.tsbHighlight.Name = "tsbHighlight";
-            this.tsbHighlight.Size = new System.Drawing.Size(180, 22);
-            this.tsbHighlight.Text = "Highlight";
-            // 
-            // lblCName
-            // 
-            this.lblCName.AutoSize = true;
-            this.lblCName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCName.Location = new System.Drawing.Point(433, 3);
-            this.lblCName.Name = "lblCName";
-            this.lblCName.Size = new System.Drawing.Size(41, 15);
-            this.lblCName.TabIndex = 8;
-            this.lblCName.Text = "Name";
-            // 
-            // btnCSave
-            // 
-            this.btnCSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCSave.Location = new System.Drawing.Point(434, 332);
-            this.btnCSave.Name = "btnCSave";
-            this.btnCSave.Size = new System.Drawing.Size(75, 30);
-            this.btnCSave.TabIndex = 12;
-            this.btnCSave.Text = "Save";
-            this.btnCSave.UseVisualStyleBackColor = true;
-            this.btnCSave.Click += new System.EventHandler(this.btnCSave_Click);
-            // 
-            // txtCName
-            // 
-            this.txtCName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCName.Location = new System.Drawing.Point(434, 24);
-            this.txtCName.Name = "txtCName";
-            this.txtCName.Size = new System.Drawing.Size(245, 21);
-            this.txtCName.TabIndex = 6;
-            // 
-            // txtCDescription
-            // 
-            this.txtCDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCDescription.Location = new System.Drawing.Point(435, 86);
-            this.txtCDescription.Name = "txtCDescription";
-            this.txtCDescription.Size = new System.Drawing.Size(244, 163);
-            this.txtCDescription.TabIndex = 7;
-            this.txtCDescription.Text = "";
-            // 
-            // lblCModified
-            // 
-            this.lblCModified.AutoSize = true;
-            this.lblCModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCModified.Location = new System.Drawing.Point(433, 285);
-            this.lblCModified.Name = "lblCModified";
-            this.lblCModified.Size = new System.Drawing.Size(0, 15);
-            this.lblCModified.TabIndex = 9;
-            // 
-            // lblCCreated
-            // 
-            this.lblCCreated.AutoSize = true;
-            this.lblCCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCCreated.Location = new System.Drawing.Point(433, 257);
-            this.lblCCreated.Name = "lblCCreated";
-            this.lblCCreated.Size = new System.Drawing.Size(0, 15);
-            this.lblCCreated.TabIndex = 10;
-            // 
-            // lblCDescription
-            // 
-            this.lblCDescription.AutoSize = true;
-            this.lblCDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCDescription.Location = new System.Drawing.Point(433, 65);
-            this.lblCDescription.Name = "lblCDescription";
-            this.lblCDescription.Size = new System.Drawing.Size(69, 15);
-            this.lblCDescription.TabIndex = 11;
-            this.lblCDescription.Text = "Description";
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbPrint
             // 
@@ -555,39 +471,131 @@
             this.toolStripSeparator10.Name = "toolStripSeparator10";
             this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbCopy
+            // tsbExitCollection
             // 
-            this.tsbCopy.Image = ((System.Drawing.Image)(resources.GetObject("tsbCopy.Image")));
-            this.tsbCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCopy.Name = "tsbCopy";
-            this.tsbCopy.Size = new System.Drawing.Size(53, 22);
-            this.tsbCopy.Text = "copy";
+            this.tsbExitCollection.Image = ((System.Drawing.Image)(resources.GetObject("tsbExitCollection.Image")));
+            this.tsbExitCollection.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbExitCollection.Name = "tsbExitCollection";
+            this.tsbExitCollection.Size = new System.Drawing.Size(45, 22);
+            this.tsbExitCollection.Text = "exit";
             // 
-            // toolStripSeparator11
+            // tabSidePanel
             // 
-            this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
+            this.tabSidePanel.Controls.Add(this.tabSideBrowse);
+            this.tabSidePanel.Controls.Add(this.tabSideOpen);
+            this.tabSidePanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tabSidePanel.Location = new System.Drawing.Point(0, 50);
+            this.tabSidePanel.Name = "tabSidePanel";
+            this.tabSidePanel.SelectedIndex = 0;
+            this.tabSidePanel.Size = new System.Drawing.Size(252, 630);
+            this.tabSidePanel.TabIndex = 9;
             // 
-            // tsbClipboard
+            // tabSideBrowse
             // 
-            this.tsbClipboard.Image = ((System.Drawing.Image)(resources.GetObject("tsbClipboard.Image")));
-            this.tsbClipboard.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbClipboard.Name = "tsbClipboard";
-            this.tsbClipboard.Size = new System.Drawing.Size(77, 22);
-            this.tsbClipboard.Text = "clipboard";
+            this.tabSideBrowse.Controls.Add(this.lblCCreated);
+            this.tabSideBrowse.Controls.Add(this.lblCModified);
+            this.tabSideBrowse.Controls.Add(this.lblCName);
+            this.tabSideBrowse.Controls.Add(this.btnCSave);
+            this.tabSideBrowse.Controls.Add(this.lblCDescription);
+            this.tabSideBrowse.Controls.Add(this.txtCName);
+            this.tabSideBrowse.Controls.Add(this.txtCDescription);
+            this.tabSideBrowse.Location = new System.Drawing.Point(4, 22);
+            this.tabSideBrowse.Name = "tabSideBrowse";
+            this.tabSideBrowse.Size = new System.Drawing.Size(244, 604);
+            this.tabSideBrowse.TabIndex = 0;
+            this.tabSideBrowse.Text = "tabPage1";
+            this.tabSideBrowse.UseVisualStyleBackColor = true;
             // 
-            // toolStripSeparator12
+            // tabSideOpen
             // 
-            this.toolStripSeparator12.Name = "toolStripSeparator12";
-            this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
+            this.tabSideOpen.Controls.Add(this.lblName);
+            this.tabSideOpen.Controls.Add(this.btnReset);
+            this.tabSideOpen.Controls.Add(this.txtName);
+            this.tabSideOpen.Controls.Add(this.txtDescription);
+            this.tabSideOpen.Controls.Add(this.lblDateModified);
+            this.tabSideOpen.Controls.Add(this.lblDateCreated);
+            this.tabSideOpen.Controls.Add(this.lblDescription);
+            this.tabSideOpen.Location = new System.Drawing.Point(4, 22);
+            this.tabSideOpen.Name = "tabSideOpen";
+            this.tabSideOpen.Size = new System.Drawing.Size(244, 604);
+            this.tabSideOpen.TabIndex = 1;
+            this.tabSideOpen.Text = "tabPage2";
+            this.tabSideOpen.UseVisualStyleBackColor = true;
+            // 
+            // lblName
+            // 
+            this.lblName.AutoSize = true;
+            this.lblName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblName.Location = new System.Drawing.Point(0, 0);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(41, 15);
+            this.lblName.TabIndex = 8;
+            this.lblName.Text = "Name";
+            // 
+            // btnReset
+            // 
+            this.btnReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReset.Location = new System.Drawing.Point(4, 268);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(75, 30);
+            this.btnReset.TabIndex = 12;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            // 
+            // txtName
+            // 
+            this.txtName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtName.Location = new System.Drawing.Point(0, 18);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(244, 21);
+            this.txtName.TabIndex = 6;
+            // 
+            // txtDescription
+            // 
+            this.txtDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDescription.Location = new System.Drawing.Point(0, 86);
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(244, 92);
+            this.txtDescription.TabIndex = 7;
+            this.txtDescription.Text = "";
+            // 
+            // lblDateModified
+            // 
+            this.lblDateModified.AutoSize = true;
+            this.lblDateModified.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateModified.Location = new System.Drawing.Point(0, 218);
+            this.lblDateModified.Name = "lblDateModified";
+            this.lblDateModified.Size = new System.Drawing.Size(82, 15);
+            this.lblDateModified.TabIndex = 9;
+            this.lblDateModified.Text = "date modified";
+            // 
+            // lblDateCreated
+            // 
+            this.lblDateCreated.AutoSize = true;
+            this.lblDateCreated.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDateCreated.Location = new System.Drawing.Point(0, 190);
+            this.lblDateCreated.Name = "lblDateCreated";
+            this.lblDateCreated.Size = new System.Drawing.Size(75, 15);
+            this.lblDateCreated.TabIndex = 10;
+            this.lblDateCreated.Text = "date created";
+            // 
+            // lblDescription
+            // 
+            this.lblDescription.AutoSize = true;
+            this.lblDescription.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDescription.Location = new System.Drawing.Point(0, 62);
+            this.lblDescription.Name = "lblDescription";
+            this.lblDescription.Size = new System.Drawing.Size(69, 15);
+            this.lblDescription.TabIndex = 11;
+            this.lblDescription.Text = "Description";
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1068, 680);
+            this.Controls.Add(this.tabSidePanel);
             this.Controls.Add(this.barMenuOpen);
-            this.Controls.Add(this.sidePanel);
             this.Controls.Add(this.tabMain);
             this.Controls.Add(this.barMenu);
             this.Name = "frmMain";
@@ -597,14 +605,15 @@
             this.barMenu.PerformLayout();
             this.tabMain.ResumeLayout(false);
             this.tabBrowse.ResumeLayout(false);
-            this.tabBrowse.PerformLayout();
             this.tabOpen.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picDisplay)).EndInit();
-            this.infoPanel.ResumeLayout(false);
-            this.infoPanel.PerformLayout();
-            this.sidePanel.ResumeLayout(false);
             this.barMenuOpen.ResumeLayout(false);
             this.barMenuOpen.PerformLayout();
+            this.tabSidePanel.ResumeLayout(false);
+            this.tabSideBrowse.ResumeLayout(false);
+            this.tabSideBrowse.PerformLayout();
+            this.tabSideOpen.ResumeLayout(false);
+            this.tabSideOpen.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -619,18 +628,9 @@
         private System.Windows.Forms.FlowLayoutPanel flowPanel;
         private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripButton tsbOpen;
-        private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.RichTextBox txtDescription;
-        private System.Windows.Forms.Label lblDateCreated;
-        private System.Windows.Forms.Label lblDateModified;
-        private System.Windows.Forms.Button btnReset;
-        private System.Windows.Forms.Label lblName;
-        private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.PictureBox picDisplay;
         private System.Windows.Forms.ToolStripButton tsbDeleteCollection;
         private System.Windows.Forms.ToolStripButton tsbSaveCollection;
-        private System.Windows.Forms.GroupBox infoPanel;
-        private System.Windows.Forms.Panel sidePanel;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -665,6 +665,16 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
         private System.Windows.Forms.ToolStripButton tsbClipboard;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+        private System.Windows.Forms.TabControl tabSidePanel;
+        private System.Windows.Forms.TabPage tabSideBrowse;
+        private System.Windows.Forms.TabPage tabSideOpen;
+        private System.Windows.Forms.Label lblName;
+        private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.RichTextBox txtDescription;
+        private System.Windows.Forms.Label lblDateModified;
+        private System.Windows.Forms.Label lblDateCreated;
+        private System.Windows.Forms.Label lblDescription;
     }
 }
 
