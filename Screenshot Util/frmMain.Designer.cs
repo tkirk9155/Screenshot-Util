@@ -41,6 +41,11 @@
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.tabMain = new System.Windows.Forms.TabControl();
             this.tabBrowse = new System.Windows.Forms.TabPage();
+            this.lblInfo = new System.Windows.Forms.Label();
+            this.lstFiles = new System.Windows.Forms.ListBox();
+            this.tabOpen = new System.Windows.Forms.TabPage();
+            this.picDisplay = new System.Windows.Forms.PictureBox();
+            this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.lblCName = new System.Windows.Forms.Label();
             this.btnCSave = new System.Windows.Forms.Button();
             this.txtCName = new System.Windows.Forms.TextBox();
@@ -48,11 +53,6 @@
             this.lblCModified = new System.Windows.Forms.Label();
             this.lblCCreated = new System.Windows.Forms.Label();
             this.lblCDescription = new System.Windows.Forms.Label();
-            this.lblInfo = new System.Windows.Forms.Label();
-            this.lstFiles = new System.Windows.Forms.ListBox();
-            this.tabOpen = new System.Windows.Forms.TabPage();
-            this.picDisplay = new System.Windows.Forms.PictureBox();
-            this.flowPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.tsbScreenshot = new System.Windows.Forms.ToolStripButton();
             this.tsbDeleteScreenshot = new System.Windows.Forms.ToolStripButton();
             this.barMenuOpen = new System.Windows.Forms.ToolStrip();
@@ -199,6 +199,64 @@
             this.tabBrowse.Text = "tabPage1";
             this.tabBrowse.UseVisualStyleBackColor = true;
             // 
+            // lblInfo
+            // 
+            this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInfo.Location = new System.Drawing.Point(719, 521);
+            this.lblInfo.Name = "lblInfo";
+            this.lblInfo.Size = new System.Drawing.Size(81, 80);
+            this.lblInfo.TabIndex = 2;
+            this.lblInfo.Text = "label1";
+            // 
+            // lstFiles
+            // 
+            this.lstFiles.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lstFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lstFiles.FormattingEnabled = true;
+            this.lstFiles.ItemHeight = 16;
+            this.lstFiles.Location = new System.Drawing.Point(3, 3);
+            this.lstFiles.Name = "lstFiles";
+            this.lstFiles.Size = new System.Drawing.Size(424, 598);
+            this.lstFiles.TabIndex = 1;
+            this.lstFiles.DoubleClick += new System.EventHandler(this.lstFiles_DoubleClick);
+            // 
+            // tabOpen
+            // 
+            this.tabOpen.AutoScroll = true;
+            this.tabOpen.Controls.Add(this.picDisplay);
+            this.tabOpen.Controls.Add(this.flowPanel);
+            this.tabOpen.Location = new System.Drawing.Point(4, 22);
+            this.tabOpen.Name = "tabOpen";
+            this.tabOpen.Padding = new System.Windows.Forms.Padding(3);
+            this.tabOpen.Size = new System.Drawing.Size(806, 604);
+            this.tabOpen.TabIndex = 1;
+            this.tabOpen.Text = "tabPage2";
+            this.tabOpen.UseVisualStyleBackColor = true;
+            // 
+            // picDisplay
+            // 
+            this.picDisplay.BackColor = System.Drawing.Color.White;
+            this.picDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picDisplay.Location = new System.Drawing.Point(3, 145);
+            this.picDisplay.Name = "picDisplay";
+            this.picDisplay.Size = new System.Drawing.Size(800, 456);
+            this.picDisplay.TabIndex = 1;
+            this.picDisplay.TabStop = false;
+            this.picDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseDown);
+            this.picDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseUp);
+            // 
+            // flowPanel
+            // 
+            this.flowPanel.AutoScroll = true;
+            this.flowPanel.BackColor = System.Drawing.Color.White;
+            this.flowPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.flowPanel.Location = new System.Drawing.Point(3, 3);
+            this.flowPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.flowPanel.Name = "flowPanel";
+            this.flowPanel.Size = new System.Drawing.Size(800, 142);
+            this.flowPanel.TabIndex = 0;
+            this.flowPanel.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.flowPanel_ControlAdded);
+            // 
             // lblCName
             // 
             this.lblCName.AutoSize = true;
@@ -264,65 +322,6 @@
             this.lblCDescription.Size = new System.Drawing.Size(69, 15);
             this.lblCDescription.TabIndex = 11;
             this.lblCDescription.Text = "Description";
-            // 
-            // lblInfo
-            // 
-            this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInfo.Location = new System.Drawing.Point(719, 521);
-            this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(81, 80);
-            this.lblInfo.TabIndex = 2;
-            this.lblInfo.Text = "label1";
-            // 
-            // lstFiles
-            // 
-            this.lstFiles.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lstFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lstFiles.FormattingEnabled = true;
-            this.lstFiles.ItemHeight = 16;
-            this.lstFiles.Location = new System.Drawing.Point(3, 3);
-            this.lstFiles.Name = "lstFiles";
-            this.lstFiles.Size = new System.Drawing.Size(424, 598);
-            this.lstFiles.TabIndex = 1;
-            this.lstFiles.DoubleClick += new System.EventHandler(this.lstFiles_DoubleClick);
-            // 
-            // tabOpen
-            // 
-            this.tabOpen.AutoScroll = true;
-            this.tabOpen.Controls.Add(this.picDisplay);
-            this.tabOpen.Controls.Add(this.flowPanel);
-            this.tabOpen.Location = new System.Drawing.Point(4, 22);
-            this.tabOpen.Name = "tabOpen";
-            this.tabOpen.Padding = new System.Windows.Forms.Padding(3);
-            this.tabOpen.Size = new System.Drawing.Size(806, 604);
-            this.tabOpen.TabIndex = 1;
-            this.tabOpen.Text = "tabPage2";
-            this.tabOpen.UseVisualStyleBackColor = true;
-            // 
-            // picDisplay
-            // 
-            this.picDisplay.BackColor = System.Drawing.Color.White;
-            this.picDisplay.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.picDisplay.Location = new System.Drawing.Point(3, 145);
-            this.picDisplay.Name = "picDisplay";
-            this.picDisplay.Size = new System.Drawing.Size(800, 456);
-            this.picDisplay.TabIndex = 1;
-            this.picDisplay.TabStop = false;
-            this.picDisplay.MouseDown += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseDown);
-            this.picDisplay.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseMove);
-            this.picDisplay.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picDisplay_MouseUp);
-            // 
-            // flowPanel
-            // 
-            this.flowPanel.AutoScroll = true;
-            this.flowPanel.BackColor = System.Drawing.Color.White;
-            this.flowPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.flowPanel.Location = new System.Drawing.Point(3, 3);
-            this.flowPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.flowPanel.Name = "flowPanel";
-            this.flowPanel.Size = new System.Drawing.Size(800, 142);
-            this.flowPanel.TabIndex = 0;
-            this.flowPanel.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.flowPanel_ControlAdded);
             // 
             // tsbScreenshot
             // 

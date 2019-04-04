@@ -16,7 +16,7 @@ namespace Screenshot_Util
     {
         public static ImageCollection CurrentCollection;
         public static Thumbnail ActiveThumbnail;
-        public static string Root = GetPath(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Snips");
+        public static string Root = GetPath(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Snips");
 
 
 

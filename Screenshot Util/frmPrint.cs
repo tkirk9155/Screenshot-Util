@@ -24,17 +24,7 @@ namespace Screenshot_Util
             {
                 if(lstPrint.GetItemChecked(i))
                 {
-                    printImages.Add(Main.CurrentCollection.Thumbnails.FirstOrDefault(t =>
-                    {
-                        bool result = false;
-                        if (t.ImageName == lstPrint.Items[i].ToString()
-                            || t.FileName == lstPrint.Items[i].ToString())
-                        {
-                            result = true;
-                        }
-
-                        return result;
-                    }));
+                    printImages.Add(Main.CurrentCollection.Thumbnails[i]);
                 }
 
             }

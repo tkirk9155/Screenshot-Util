@@ -1,4 +1,6 @@
-﻿using System;
+﻿// icon images from icons8.com
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,12 +16,27 @@ namespace Screenshot_Util
 {
     public partial class frmMain : Form
     {
-        private System.Nullable<Point> _prevPoint;
-        private Pen _drawPen;
-        private DrawMode _drawMode = DrawMode.Pen;
-        private Color _drawColor = Color.Red;
+
         private Dictionary<string, ImageCollectionInfo> _listFiles;
         private bool Unsaved;
+
+        private struct Draw
+        {
+            internal static System.Nullable<Point> PreviousPoint;
+            internal static Pen Pen;
+            internal static DrawMode Mode = DrawMode.Pen;
+            internal static Color Color = Color.Red;
+            internal static int X;
+            internal static int Y;
+        }
+
+        private enum DrawMode
+        {
+            Pen = 0,
+            Highlight = 1
+        }
+
+
 
 
         public frmMain()
@@ -38,6 +55,23 @@ namespace Screenshot_Util
             tabSidePanel.Appearance = TabAppearance.FlatButtons;
             tabSidePanel.ItemSize = new Size(0, 1);
             tabSidePanel.SizeMode = TabSizeMode.Fixed;
+
+            tsbNew.Image = new Bitmap(Properties.Resources.icons8_plus_16);
+            tsbOpen.Image = new Bitmap(Properties.Resources.icons8_opened_folder_16);
+            tsbSaveCollection.Image = new Bitmap(Properties.Resources.icons8_save_as_16);
+            tsbDeleteCollection.Image = new Bitmap(Properties.Resources.icons8_trash_can_16);
+            tsbExit.Image = new Bitmap(Properties.Resources.icons8_shutdown_16);
+            tsbScreenshot.Image = new Bitmap(Properties.Resources.icons8_camera_16);
+            tsbBrowse.Image = new Bitmap(Properties.Resources.icons8_pictures_folder_16);
+            tsbClipboard.Image = new Bitmap(Properties.Resources.icons8_image_file_16);
+            tsbDeleteScreenshot.Image = new Bitmap(Properties.Resources.icons8_delete_16);
+            tsbDrawMode.Image = new Bitmap(Properties.Resources.icons8_edit_16);
+            tsbUndo.Image = new Bitmap(Properties.Resources.icons8_available_updates_16);
+            tsbCopy.Image = new Bitmap(Properties.Resources.icons8_copy_to_clipboard_16);
+            tsbPrint.Image = new Bitmap(Properties.Resources.icons8_print_16);
+            tsbExitCollection.Image = new Bitmap(Properties.Resources.icons8_exit_sign_16);
+
+            tsbDrawMode.ForeColor = Draw.Color;
 
             //FillDataGrid();
             ExitControls();
@@ -173,7 +207,12 @@ namespace Screenshot_Util
         {
             //if (Main.NewCollection())
             //    OpenCollection();
-            OpenCollection(Main.NewCollection());
+            string result = Main.NewCollection();
+            if (result != null)
+            {
+                GetFilesList();
+                OpenCollection(result);
+            }
         }
 
 
@@ -292,7 +331,7 @@ namespace Screenshot_Util
 
         public void OpenCollection(string path = null)
         {
-            if (lstFiles.SelectedIndex < 0) { return; }
+            if (lstFiles.SelectedIndex < 0 && path == null) { return; }
 
             if (path == null)
                 path = _listFiles[lstFiles.SelectedItem.ToString()].Path;
@@ -312,13 +351,15 @@ namespace Screenshot_Util
 
 
 
+        // move this to Main
         private void GetFilesList()
         {
             lstFiles.SelectedIndexChanged -= lstFiles_SelectedIndexChanged;
 
             _listFiles = new Dictionary<string, ImageCollectionInfo>();
             lstFiles.Items.Clear();
-            foreach(string folder in Directory.GetDirectories(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures) + "\\Snips"))
+            if (!Directory.Exists(Main.Root)) { Directory.CreateDirectory(Main.Root); }
+            foreach(string folder in Directory.GetDirectories(Main.Root))
             {
                 ImageCollectionInfo file = new ImageCollectionInfo(folder);
                 _listFiles.Add(file.Name, file);
@@ -326,6 +367,8 @@ namespace Screenshot_Util
             }
 
             lstFiles.SelectedIndexChanged += lstFiles_SelectedIndexChanged;
+
+            if (lstFiles.Items.Count > 0) { lstFiles.SelectedIndex = 0; }
         }
 
 
@@ -431,31 +474,52 @@ namespace Screenshot_Util
 
         private void picDisplay_MouseDown(object sender, MouseEventArgs e)
         {
-            switch (_drawMode)
+            switch (Draw.Mode)
             {
                 case DrawMode.Pen:
-                    _drawPen = new Pen(_drawColor, 3);
+                    Draw.Pen = new Pen(Draw.Color, 3);
+                    picDisplay.MouseMove += picDisplay_MouseMove_Pen;
                     break;
 
                 case DrawMode.Highlight:
-                    _drawPen = new Pen(Color.FromArgb(48, _drawColor), 30);
+                    Draw.Pen = new Pen(Color.FromArgb(80, Draw.Color), 30);
+                    Draw.X = e.X;
+                    Draw.Y = e.Y;
+                    picDisplay.MouseMove += picDisplay_MouseMove_Highlight;
                     break;
             }
 
-            _prevPoint = e.Location;
-            picDisplay_MouseMove(sender, e);
+            Draw.PreviousPoint = e.Location;
+            picDisplay_MouseMove_Pen(sender, e);
         }
 
-        private void picDisplay_MouseMove(object sender, MouseEventArgs e)
+
+
+        private void picDisplay_MouseMove_Pen(object sender, MouseEventArgs e)
+        {
+            if (picDisplay.Image != null)
+            {
+                if (Draw.PreviousPoint != null)
+                {
+                    using (Graphics g = Graphics.FromImage(picDisplay.Image))
+                        g.DrawLine(Draw.Pen, Draw.PreviousPoint.Value, e.Location);
+                    picDisplay.Invalidate();
+                    Draw.PreviousPoint = e.Location;
+                }
+            }
+        }
+
+
+
+        private void picDisplay_MouseMove_Highlight(object sender, MouseEventArgs e)
         {
             if(picDisplay.Image != null)
             {
-                if(_prevPoint != null)
+                picDisplay.Refresh();
+
+                if (Draw.PreviousPoint != null)
                 {
-                    using (Graphics g = Graphics.FromImage(picDisplay.Image))
-                        g.DrawLine(_drawPen, _prevPoint.Value, e.Location);
-                    picDisplay.Invalidate();
-                    _prevPoint = e.Location;
+                    picDisplay.CreateGraphics().DrawLine(Draw.Pen, Draw.X, Draw.Y, e.X, e.Y);
                 }
             }
         }
@@ -464,12 +528,21 @@ namespace Screenshot_Util
 
         private void picDisplay_MouseUp(object sender, MouseEventArgs e)
         {
-            if (_prevPoint != null)
+            if (Draw.PreviousPoint != null)
             {
-                _prevPoint = null;
-                _drawPen.Dispose();
-                _drawPen = null;
+                if (Draw.Mode == DrawMode.Highlight)
+                {
+                    using (Graphics g = Graphics.FromImage(picDisplay.Image))
+                        g.DrawLine(Draw.Pen, Draw.PreviousPoint.Value, e.Location);
+                    picDisplay.Invalidate();
+                }
+
+                Draw.PreviousPoint = null;
+                Draw.Pen.Dispose();
+                Draw.Pen = null;
                 Main.ActiveThumbnail.SaveTempImage(picDisplay.Image);
+                picDisplay.MouseMove -= picDisplay_MouseMove_Highlight;
+                picDisplay.MouseMove -= picDisplay_MouseMove_Pen;
             }
         }
 
@@ -480,14 +553,17 @@ namespace Screenshot_Util
             switch (e.ClickedItem.Name.ToLower())
             {
                 case "tsbpen":
-                    _drawMode = DrawMode.Pen;
+                    Draw.Mode = DrawMode.Pen;
+                    tsbDrawMode.Image = new Bitmap(Properties.Resources.icons8_edit_16);
                     break;
 
                 case "tsbhighlight":
-                    _drawMode = DrawMode.Highlight;
+                    Draw.Mode = DrawMode.Highlight;
+                    tsbDrawMode.Image = new Bitmap(Properties.Resources.icons8_tube_16);
                     break;
             }
-            GetDrawPen(_drawMode);
+            GetDrawPen(Draw.Mode);
+            tsbDrawMode.ForeColor = Draw.Color;
         }
 
 
@@ -498,14 +574,14 @@ namespace Screenshot_Util
             {
                 if (colorDialog.ShowDialog() == DialogResult.OK)
                 {
-                    _drawColor = colorDialog.Color;
+                    Draw.Color = colorDialog.Color;
                 }
                 else
                 {
                     if (mode == DrawMode.Pen)
-                        _drawColor = Color.Red;
+                        Draw.Color = Color.Red;
                     else
-                        _drawColor = Color.Yellow;
+                        Draw.Color = Color.Yellow;
                 }
             }
         }
@@ -515,14 +591,6 @@ namespace Screenshot_Util
         private void lstFiles_DoubleClick(object sender, EventArgs e)
         {
             OpenCollection();
-        }
-
-
-
-        private enum DrawMode
-        {
-            Pen = 0,
-            Highlight = 1
         }
 
 
