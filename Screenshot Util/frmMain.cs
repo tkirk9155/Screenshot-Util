@@ -17,8 +17,7 @@ namespace Screenshot_Util
     public partial class frmMain : Form
     {
 
-        private Dictionary<string, ImageCollectionInfo> _listFiles;
-        private bool Unsaved;
+        private bool Unsaved { get; set; }
 
         private struct Draw
         {
@@ -57,7 +56,7 @@ namespace Screenshot_Util
             tabSidePanel.SizeMode = TabSizeMode.Fixed;
 
             tsbNew.Image = new Bitmap(Properties.Resources.icons8_plus_16);
-            tsbOpen.Image = new Bitmap(Properties.Resources.icons8_opened_folder_16);
+            //tsbOpen.Image = new Bitmap(Properties.Resources.icons8_opened_folder_16);
             tsbSaveCollection.Image = new Bitmap(Properties.Resources.icons8_save_as_16);
             tsbDeleteCollection.Image = new Bitmap(Properties.Resources.icons8_trash_can_16);
             tsbExit.Image = new Bitmap(Properties.Resources.icons8_shutdown_16);
@@ -142,20 +141,11 @@ namespace Screenshot_Util
 
         private async void DeleteCollection()
         {
-            string deletePath = null;
-            if (Main.CurrentCollection != null)
-                deletePath = Main.CurrentCollection.Path;
-            else if (lstFiles.SelectedIndex >= 0)
-                deletePath = _listFiles[lstFiles.SelectedItem.ToString()].Path;
-
-            if (deletePath != null)
+            if (MessageBox.Show("Are you sure you want to delete this collection?", null, 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                if (MessageBox.Show("Are you sure you want to delete this collection?", null, 
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    await Main.DeleteFolderAsync(deletePath);
-                    ExitCollection(checkSave:false);
-                }
+                await Main.DeleteFolderAsync(Main.CurrentCollection.Path);
+                ExitCollection(checkSave:false);
             }
         }
 
@@ -234,7 +224,7 @@ namespace Screenshot_Util
         private void ExitControls()
         {
             tsbNew.Enabled = true;
-            tsbOpen.Enabled = true;
+            //tsbOpen.Enabled = true;
             tsbSaveCollection.Enabled = false;
 
             tsbScreenshot.Enabled = false;
@@ -273,7 +263,7 @@ namespace Screenshot_Util
         private void OpenControls()
         {
             tsbNew.Enabled = false;
-            tsbOpen.Enabled = false;
+            //tsbOpen.Enabled = false;
             tsbSaveCollection.Enabled = true;
 
             tsbScreenshot.Enabled = true;
@@ -323,7 +313,7 @@ namespace Screenshot_Util
             }
             else
             {
-                MessageBox.Show("Clipboard empty");
+                MessageBox.Show("Clipboard doesn't contain an image.");
             }
         }
 
@@ -331,10 +321,8 @@ namespace Screenshot_Util
 
         public void OpenCollection(string path = null)
         {
-            if (lstFiles.SelectedIndex < 0 && path == null) { return; }
-
             if (path == null)
-                path = _listFiles[lstFiles.SelectedItem.ToString()].Path;
+                path = Main.GetPath(Main.Root, tsbOpen.Text);
 
             Main.OpenCollection(path);
             foreach (Thumbnail thumb in Main.CurrentCollection.Thumbnails)
@@ -354,23 +342,18 @@ namespace Screenshot_Util
         // move this to Main
         private void GetFilesList()
         {
-            lstFiles.SelectedIndexChanged -= lstFiles_SelectedIndexChanged;
+            tsbOpen.SelectedIndexChanged -= tsbOpen_SelectedIndexChanged;
 
-            _listFiles = new Dictionary<string, ImageCollectionInfo>();
-            lstFiles.Items.Clear();
-            if (!Directory.Exists(Main.Root)) { Directory.CreateDirectory(Main.Root); }
-            foreach(string folder in Directory.GetDirectories(Main.Root))
+            tsbOpen.Items.Clear();
+            foreach (string folder in Main.GetFilesList())
             {
-                ImageCollectionInfo file = new ImageCollectionInfo(folder);
-                _listFiles.Add(file.Name, file);
-                lstFiles.Items.Add(file.Name);
+                tsbOpen.Items.Add(folder);
             }
 
-            lstFiles.SelectedIndexChanged += lstFiles_SelectedIndexChanged;
+            tsbOpen.SelectedIndexChanged += tsbOpen_SelectedIndexChanged;
 
-            if (lstFiles.Items.Count > 0) { lstFiles.SelectedIndex = 0; }
+            //if (tsbOpen.Items.Count > 0) { tsbOpen.SelectedIndex = 0; }
         }
-
 
 
 
@@ -587,26 +570,6 @@ namespace Screenshot_Util
         }
 
 
-        
-        private void lstFiles_DoubleClick(object sender, EventArgs e)
-        {
-            OpenCollection();
-        }
-
-
-
-        private void lstFiles_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(lstFiles.SelectedIndex >= 0)
-            {
-                ImageCollectionInfo info = _listFiles[lstFiles.SelectedItem.ToString()];
-                txtCName.Text = info.Name;
-                txtCDescription.Text = info.Description;
-                lblCCreated.Text = "Created: " + info.DateCreated.ToString();
-                lblCModified.Text = "Modified: " + info.DateModified.ToString();
-            }
-        }
-
 
 
         private void Form_Changed(object sender, EventArgs e)
@@ -618,9 +581,9 @@ namespace Screenshot_Util
 
         private async void btnCSave_Click(object sender, EventArgs e)
         {
-            if (lstFiles.SelectedIndex >= 0)
+            if (tsbOpen.SelectedIndex >= 0)
             {
-                ImageCollectionInfo info = _listFiles[lstFiles.SelectedItem.ToString()];
+                ImageCollection info = Main.CurrentCollection;
 
                 if (txtCName.Text != info.Name)
                 {
@@ -632,7 +595,6 @@ namespace Screenshot_Util
                     }
 
                     GetFilesList();
-                    lstFiles.SelectedItem = txtCName.Text;
                 }
 
                 if (txtCDescription.Text != info.Description)
@@ -641,5 +603,11 @@ namespace Screenshot_Util
         }
 
 
+
+        private void tsbOpen_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ExitCollection();
+            OpenCollection();
+        }
     }
 }

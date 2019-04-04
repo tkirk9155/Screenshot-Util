@@ -9,61 +9,66 @@ using System.Drawing;
 
 namespace Screenshot_Util
 {
-    public class ImageCollection : ImageCollectionInfo
+    public class ImageCollection
     {
-        private string _originalName;
-        private string _originalInfo;
 
-        public string OriginalName
-        {
-            get
-            {
-                return _originalName;
-            }
-        }
+        public string OriginalName { get; private set; }
+        public string OriginalInfo { get; private set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
+        public string Size { get; set; }
+        public int Files { get; set; }
+        public string Description { get; set; }
 
-        public string OriginalInfo
-        {
-            get
-            {
-                return _originalInfo;
-            }
-        }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateModified { get; set; }
 
         public List<Thumbnail> Thumbnails;
 
 
 
         public ImageCollection(string folderPath) 
-            : base(folderPath)
         {
-            Thumbnails = new List<Thumbnail>();
-
-            string infoPath = Path + @"\" + "info.txt";
+            Path = folderPath;
+            string infoPath = Main.GetPath(Path, "info.txt");
             if (!File.Exists(infoPath))
             {
                 File.WriteAllText(infoPath, "");
                 System.Threading.Thread.Sleep(500);
             }
 
+
             string[] fileContents = File.ReadAllLines(infoPath).Where(f => f.Trim().Length > 0).ToArray();
+            if (fileContents[0].Contains('|'))
+            {
+                string[] info = fileContents[0].Split('|');
+                Description = info.Length > 1 ? info[1] : "";
+            }
+
+            DirectoryInfo dirInfo = new DirectoryInfo(folderPath);
+
+            Name = dirInfo.Name;
+            FileInfo[] getFiles = dirInfo.GetFiles("*.png");
+            Files = getFiles.Length;
+            Size = GetDirectorySize(getFiles);
+            SetDates(dirInfo);
+
+            Thumbnails = new List<Thumbnail>();
+
             for (int i = 1; i < fileContents.Length; i++)
             {
                 string[] line = fileContents[i].Split('|');
-                //string[] dates = GetFileDates(line[0]);
 
                 Thumbnails.Add(new Thumbnail
                 {
                     FilePath = Main.GetPath(this.Path, line[0]),
                     ImageName = line[1],
                     Description = line[2],
-                    //DateCreated = dates[0],
-                    //DateModified = dates[1],
                 });
             }
 
-            _originalName = Name;
-            _originalInfo = Description;
+            OriginalName = Name;
+            OriginalInfo = Description;
         }
 
 
@@ -80,16 +85,53 @@ namespace Screenshot_Util
 
 
 
-        //public static string[] GetFileDates(string fileName)
-        //{
-        //    string[] dates = new string[2];
-        //    FileInfo fInfo = new FileInfo(fileName);
-        //    dates[0] = fInfo.CreationTime.ToString();
-        //    dates[1] = fInfo.LastWriteTime.ToString();
+        private string GetDirectorySize(FileInfo[] getFiles)
+        {
+            double numBytes = 0;
+            foreach (FileInfo f in getFiles)
+                numBytes += f.Length;
 
-        //    return dates;
-        //}
+            string[] Suffix = { "B", "KB", "MB", "GB", "TB" };
+            int i;
+            double dblSByte = numBytes;
+            for (i = 0; i < Suffix.Length && numBytes >= 1024; i++, numBytes /= 1024)
+                dblSByte = numBytes / 1024.0;
 
+            return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+        }
+
+
+
+        public async Task<bool> Rename(string newFolderName)
+        {
+            string newPath = await Main.RenameFolderAsync(Path, newFolderName);
+            if (newPath == null) { return false; }
+            Path = newPath;
+            Name = newFolderName;
+            SetDates();
+            return true;
+        }
+
+
+
+        private void SetDates(DirectoryInfo dirInfo = null)
+        {
+            if (dirInfo == null)
+                dirInfo = new DirectoryInfo(Path);
+            DateCreated = dirInfo.CreationTime;
+            DateModified = dirInfo.LastWriteTime;
+        }
+
+
+        public void SetDescription(string description)
+        {
+            Description = description;
+
+            string infoPath = Main.GetPath(Path, "info.txt");
+            string[] fileContents = File.ReadAllLines(infoPath);
+            fileContents[0] = Name + "|" + Description;
+            File.WriteAllLines(infoPath, fileContents);
+        }
 
 
         public async void Save()

@@ -49,6 +49,16 @@ namespace Screenshot_Util
 
 
 
+        public static string[] GetFilesList()
+        {
+            if (!Directory.Exists(Root)) { Directory.CreateDirectory(Root); }
+
+            return Directory.GetDirectories(Root).Select(f => f.Substring(f.LastIndexOf('\\') + 1)).ToArray();
+        }
+
+
+
+
         private static string GetFolder(string path)
         {
             if (path.Contains("."))
