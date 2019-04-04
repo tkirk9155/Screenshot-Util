@@ -334,8 +334,11 @@ namespace Screenshot_Util
         private void flowPanel_ControlAdded(object sender, ControlEventArgs e)
         {
             if (e.Control.GetType() == typeof(Thumbnail))
-                ((Thumbnail)e.Control).picThumbnail.Click += Thumbnail_Click;
-                ((Thumbnail)e.Control).lblDescription.Click += Thumbnail_Click;
+            {
+                Thumbnail thumb = (Thumbnail)e.Control;
+                thumb.ThumbnailClicked += Thumbnail_Click;
+                Thumbnail_Click(thumb, new EventArgs());
+            }
         }
 
 
@@ -362,13 +365,13 @@ namespace Screenshot_Util
             if (thumb != null)
                 thumb.BorderStyle = BorderStyle.FixedSingle;
 
-            Main.ActiveThumbnail = (Thumbnail)((Control)sender).Parent;
+            Main.ActiveThumbnail = (Thumbnail)((Control)sender);
             thumb = Main.ActiveThumbnail;
             //thumb = (Thumbnail)((Control)sender).Parent;
             thumb.BorderStyle = BorderStyle.Fixed3D;
 
             txtName.Text = thumb.ImageName;
-            txtDescription.Text = thumb.Info;
+            txtDescription.Text = thumb.Description;
             using (var bmp = new Bitmap(thumb.TempFileName != null ? Main.GetPath(thumb.TempFilePath, thumb.TempFileName) : thumb.FilePath))     // need to clear TempFilePath
                 picDisplay.Image = new Bitmap(bmp);
 
@@ -386,7 +389,7 @@ namespace Screenshot_Util
         private void FlowPanel_SelectFirst()
         {
             if (flowPanel.Controls.Count > 0)
-                Thumbnail_Click(flowPanel.Controls.OfType<Thumbnail>().FirstOrDefault<Thumbnail>().picThumbnail,
+                Thumbnail_Click(flowPanel.Controls.OfType<Thumbnail>().FirstOrDefault<Thumbnail>(),
                                 new EventArgs());
         }
 
@@ -402,7 +405,7 @@ namespace Screenshot_Util
 
         private void ImageDescription_Changed(object sender, EventArgs e)
         {
-            Main.ActiveThumbnail.Info = txtDescription.Text;
+            Main.ActiveThumbnail.Description = txtDescription.Text;
         }
 
         private void ImageName_Changed(object sender, EventArgs e)
@@ -415,13 +418,13 @@ namespace Screenshot_Util
 
         private void btnReset_Click(object sender, EventArgs e)
         {
-            Thumbnail a = Main.ActiveThumbnail;
-            txtName.Text = a.OriginalName;
-            txtDescription.Text = a.OriginalInfo;
-            string folder = a.TempFilePath.Remove(a.TempFilePath.LastIndexOf(@"\"));
+            Thumbnail thumb = Main.ActiveThumbnail;
+            txtName.Text = thumb.OriginalName;
+            txtDescription.Text = thumb.OriginalInfo;
+            string folder = thumb.TempFilePath.Remove(thumb.TempFilePath.LastIndexOf(@"\"));
             Main.DeleteFolderAsync(folder);
-            a.TempFilePath = null;
-            Thumbnail_Click(a.picThumbnail, new EventArgs());
+            thumb.TempFilePath = null;
+            Thumbnail_Click(thumb, new EventArgs());
         }
 
 

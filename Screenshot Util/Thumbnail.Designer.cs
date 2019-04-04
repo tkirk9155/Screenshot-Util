@@ -42,6 +42,7 @@
             this.picThumbnail.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picThumbnail.TabIndex = 0;
             this.picThumbnail.TabStop = false;
+            this.picThumbnail.Click += new System.EventHandler(this.picThumbnail_Click);
             // 
             // lblDescription
             // 
@@ -51,6 +52,7 @@
             this.lblDescription.Name = "lblDescription";
             this.lblDescription.Size = new System.Drawing.Size(119, 21);
             this.lblDescription.TabIndex = 1;
+            this.lblDescription.Click += new System.EventHandler(this.lblDescription_Click);
             // 
             // Thumbnail
             // 

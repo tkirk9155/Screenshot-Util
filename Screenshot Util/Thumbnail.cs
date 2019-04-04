@@ -19,12 +19,16 @@ namespace Screenshot_Util
         //public string FileName;
         public string FilePath;
         public string ImageName;
-        public string Info;
+        public string Description;
         public string DateCreated;
         public string DateModified;
         public string TempFileName;
         public string TempFilePath;
         //public string TempFilePath;
+
+        public delegate void ThumbnailClickedHandler(object sender, EventArgs e);
+        public event ThumbnailClickedHandler ThumbnailClicked;
+
 
         //private bool _tempFile;
         private string _originalName;
@@ -40,27 +44,12 @@ namespace Screenshot_Util
 
         public string FileName
         {
-            get
-            {
-                return FilePath.Substring(FilePath.LastIndexOf('\\') + 1);
-            }
+            get { return FilePath.Substring(FilePath.LastIndexOf('\\') + 1); }
         }
 
-        public string OriginalName
-        {
-            get
-            {
-                return _originalName;
-            }
-        }
+        public string OriginalName { get; private set; }
 
-        public string OriginalInfo
-        {
-            get
-            {
-                return _originalInfo;
-            }
-        }
+        public string OriginalInfo { get; private set; }
 
         private bool _thumbnailCallback() { return false; }
 
@@ -81,8 +70,8 @@ namespace Screenshot_Util
             }
             lblDescription.Text = ImageName;
             lblDescription.BackColor = Color.Transparent;
-            _originalName = this.ImageName;
-            _originalInfo = this.Info;
+            OriginalName = this.ImageName;
+            OriginalInfo = this.Description;
             TempFilePath = FilePath.Insert(FilePath.LastIndexOf(@"\") + 1, "temp"); ;
             TempFilePath = TempFilePath.Remove(TempFilePath.LastIndexOf("."));
 
@@ -161,6 +150,40 @@ namespace Screenshot_Util
 
         }
 
+        private void picThumbnail_Click(object sender, EventArgs e)
+        {
+            ThumbnailClicked(this, new EventArgs());
+        }
 
+        private void lblDescription_Click(object sender, EventArgs e)
+        {
+            ThumbnailClicked(this, new EventArgs());
+        }
     }
+
+
+
+    //public class ThumbnailEventArgs : EventArgs
+    //{
+    //    public string FilePath { get; private set; }
+    //    public string ImageName { get; private set; }
+    //    public string Description { get; private set; }
+    //    public string DateCreated { get; private set; }
+    //    public string DateModified { get; private set; }
+    //    public string TempFileName { get; private set; }
+    //    public string TempFilePath { get; private set; }
+        
+    //    public ThumbnailEventArgs(Thumbnail thumb)
+    //    {
+    //        FilePath = thumb.FilePath;
+    //        ImageName = thumb.ImageName;
+    //        Description = thumb.Description;
+    //        DateCreated = thumb.DateCreated;
+    //        FilePath = thumb.FilePath;
+    //        TempFileName = thumb.TempFileName;
+    //        TempFilePath = thumb.TempFilePath;
+    //    }
+
+    //}
+
 }

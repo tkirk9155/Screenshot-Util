@@ -39,7 +39,7 @@ namespace Screenshot_Util
                 InlineShape docImg = oWord.Selection.Range.InlineShapes.AddPicture(images[i].FilePath, false, true);
                 oDoc.Paragraphs.Add();
                 oWord.Selection.GoTo(WdGoToItem.wdGoToLine, WdGoToDirection.wdGoToLast);
-                oWord.Selection.Range.Text = images[i].ImageName + Environment.NewLine + images[i].Info;
+                oWord.Selection.Range.Text = images[i].ImageName + Environment.NewLine + images[i].Description;
                 oWord.Selection.GoTo(WdGoToItem.wdGoToLine, WdGoToDirection.wdGoToLast);
                 oDoc.Paragraphs.Add();
                 oDoc.Paragraphs.Add();

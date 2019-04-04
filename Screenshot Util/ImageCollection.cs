@@ -56,7 +56,7 @@ namespace Screenshot_Util
                 {
                     FilePath = Main.GetPath(this.Path, line[0]),
                     ImageName = line[1],
-                    Info = line[2],
+                    Description = line[2],
                     //DateCreated = dates[0],
                     //DateModified = dates[1],
                 });
@@ -109,12 +109,12 @@ namespace Screenshot_Util
                     File.SetCreationTime(thumb.FilePath, creationDate);
                 }
 
-                if(thumb.OriginalInfo != thumb.Info || thumb.ImageName != thumb.OriginalName)
+                if(thumb.OriginalInfo != thumb.Description || thumb.ImageName != thumb.OriginalName)
                 {
                     File.SetLastWriteTime(thumb.FilePath, DateTime.Now);
                 }
 
-                writeToFile += string.Format(formatString, thumb.FileName, thumb.ImageName, thumb.Info);
+                writeToFile += string.Format(formatString, thumb.FileName, thumb.ImageName, thumb.Description);
             }
 
             File.WriteAllText(Main.GetPath(Path, "info.txt"), writeToFile);
