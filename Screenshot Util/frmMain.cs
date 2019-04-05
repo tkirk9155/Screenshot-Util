@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.IO;
+using System.Drawing.Imaging;
 
 namespace Screenshot_Util
 {
@@ -18,6 +19,7 @@ namespace Screenshot_Util
     {
 
         private bool Unsaved { get; set; }
+        private string CollectionName { get; set; }
 
         private struct Draw
         {
@@ -69,10 +71,8 @@ namespace Screenshot_Util
             tsbCopy.Image = new Bitmap(Properties.Resources.icons8_copy_to_clipboard_16);
             tsbPrint.Image = new Bitmap(Properties.Resources.icons8_print_16);
             tsbExitCollection.Image = new Bitmap(Properties.Resources.icons8_exit_sign_16);
+            tsbColor.BackColor = Draw.Color;
 
-            tsbDrawMode.ForeColor = Draw.Color;
-
-            //FillDataGrid();
             ExitControls();
             GetFilesList();
         }
@@ -117,6 +117,10 @@ namespace Screenshot_Util
 
                 case "tsbclipboard":
                     GetImageFromClipboard();
+                    break;
+
+                case "tsbcolor":
+                    GetPenColor();
                     break;
 
                 case "tsbprint":
@@ -173,21 +177,47 @@ namespace Screenshot_Util
 
 
 
-        private void ExitCollection(bool checkSave = true)
+        private bool ExitCollection(bool checkSave = true)
         {
             //if(this.Unsaved)
+            bool exitFlag = false;
+
             if (Main.CurrentCollection != null)
             {
-                if (checkSave && MessageBox.Show("Save any changes?", "",
-                                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                //if (checkSave && MessageBox.Show("Save any changes?", "",
+                //                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                using (MsgBox msgBox = new MsgBox())
                 {
-                    Main.SaveCollection();
+                    switch (msgBox.ShowDialog())
+                    {
+                        case DialogResult.Yes:
+                            Main.CurrentCollection.Save();
+                            exitFlag = true;
+                            break;
+
+                        case DialogResult.No:
+                            exitFlag = true;
+                            break;
+                    }
                 }
-                Main.ExitCollection();
+
+                if (exitFlag) Main.ExitCollection();
             }
             
-            ExitControls();
-            GetFilesList();
+            if (exitFlag)
+            {
+                ExitControls();
+                GetFilesList();
+            }
+            else
+            {
+                tsbOpen.SelectedIndexChanged -= tsbOpen_SelectedIndexChanged;
+                tsbOpen.SelectedItem = CollectionName;
+                tsbOpen.SelectedIndexChanged += tsbOpen_SelectedIndexChanged;
+            }
+
+            return (exitFlag || Main.CurrentCollection == null);
+
             // exit
         }
 
@@ -231,6 +261,7 @@ namespace Screenshot_Util
             tsbBrowse.Enabled = false;
             tsbDeleteScreenshot.Enabled = false;
             tsbDrawMode.Enabled = false;
+            tsbColor.Enabled = false;
             tsbUndo.Enabled = false;
             tsbExitCollection.Enabled = false;
             tsbClipboard.Enabled = false;
@@ -270,6 +301,7 @@ namespace Screenshot_Util
             tsbBrowse.Enabled = true;
             tsbDeleteScreenshot.Enabled = true;
             tsbDrawMode.Enabled = true;
+            tsbColor.Enabled = true;
             tsbUndo.Enabled = true;
             tsbExitCollection.Enabled = true;
             tsbClipboard.Enabled = true;
@@ -333,6 +365,7 @@ namespace Screenshot_Util
             tabMain.SelectTab(tabOpen);
             FlowPanel_SelectFirst();
 
+            CollectionName = tsbOpen.Text;
             OpenControls();
 
         }
@@ -343,6 +376,8 @@ namespace Screenshot_Util
         private void GetFilesList()
         {
             tsbOpen.SelectedIndexChanged -= tsbOpen_SelectedIndexChanged;
+            //string collectionName = tsbOpen.Text;
+            CollectionName = tsbOpen.Text;
 
             tsbOpen.Items.Clear();
             foreach (string folder in Main.GetFilesList())
@@ -350,8 +385,9 @@ namespace Screenshot_Util
                 tsbOpen.Items.Add(folder);
             }
 
-            tsbOpen.SelectedIndexChanged += tsbOpen_SelectedIndexChanged;
+            if (CollectionName != null && tsbOpen.Items.Contains(CollectionName)) tsbOpen.SelectedItem = CollectionName;
 
+            tsbOpen.SelectedIndexChanged += tsbOpen_SelectedIndexChanged;
             //if (tsbOpen.Items.Count > 0) { tsbOpen.SelectedIndex = 0; }
         }
 
@@ -545,27 +581,33 @@ namespace Screenshot_Util
                     tsbDrawMode.Image = new Bitmap(Properties.Resources.icons8_tube_16);
                     break;
             }
-            GetDrawPen(Draw.Mode);
-            tsbDrawMode.ForeColor = Draw.Color;
+            //GetDrawPen(Draw.Mode);
+            //tsbDrawMode.ForeColor = Draw.Color;
+            //tsbDrawMode.BackColor = Draw.Color;
         }
 
 
 
-        private void GetDrawPen(DrawMode mode)
+        private void GetPenColor()
         {
             using (ColorDialog colorDialog = new ColorDialog())
             {
                 if (colorDialog.ShowDialog() == DialogResult.OK)
                 {
                     Draw.Color = colorDialog.Color;
+                    tsbColor.BackColor = Draw.Color;
                 }
-                else
-                {
-                    if (mode == DrawMode.Pen)
-                        Draw.Color = Color.Red;
-                    else
-                        Draw.Color = Color.Yellow;
-                }
+                //if (colorDialog.ShowDialog() == DialogResult.OK)
+                //{
+                //    Draw.Color = colorDialog.Color;
+                //}
+                //else
+                //{
+                //    if (mode == DrawMode.Pen)
+                //        Draw.Color = Color.Red;
+                //    else
+                //        Draw.Color = Color.Yellow;
+                //}
             }
         }
 
@@ -606,8 +648,8 @@ namespace Screenshot_Util
 
         private void tsbOpen_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ExitCollection();
-            OpenCollection();
+            if (ExitCollection()) OpenCollection();
         }
+
     }
 }

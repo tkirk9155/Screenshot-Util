@@ -56,6 +56,7 @@
             this.tsbClipboard = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbColor = new System.Windows.Forms.ToolStripButton();
             this.tsbDrawMode = new System.Windows.Forms.ToolStripDropDownButton();
             this.tsbPen = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbHighlight = new System.Windows.Forms.ToolStripMenuItem();
@@ -291,6 +292,7 @@
             this.toolStripSeparator12,
             this.tsbDeleteScreenshot,
             this.toolStripSeparator6,
+            this.tsbColor,
             this.tsbDrawMode,
             this.toolStripSeparator7,
             this.tsbUndo,
@@ -342,6 +344,14 @@
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbColor
+            // 
+            this.tsbColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbColor.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbColor.Name = "tsbColor";
+            this.tsbColor.Size = new System.Drawing.Size(23, 22);
+            this.tsbColor.Text = "     ";
             // 
             // tsbDrawMode
             // 
@@ -418,6 +428,7 @@
             this.tsbExitCollection.Name = "tsbExitCollection";
             this.tsbExitCollection.Size = new System.Drawing.Size(45, 22);
             this.tsbExitCollection.Text = "exit";
+            this.tsbExitCollection.Visible = false;
             // 
             // tabSidePanel
             // 
@@ -690,6 +701,7 @@
         private System.Windows.Forms.GroupBox infoPanel;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.RichTextBox txtDescription;
+        private System.Windows.Forms.ToolStripButton tsbColor;
     }
 }
 
